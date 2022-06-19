@@ -1893,6 +1893,117 @@ L=max (0,cos(源代码,负例)-cos(源代码,正例)+1W)</script><p>通过上述
       </tags>
   </entry>
   <entry>
+    <title>高性能mysql</title>
+    <url>/posts/5b906d18/</url>
+    <content><![CDATA[<p> 本文为高性能mysql知识点整理。</p>
+<span id="more"></span>
+<h1 id="mysql架构与历史"><a href="#mysql架构与历史" class="headerlink" title="mysql架构与历史"></a>mysql架构与历史</h1><h2 id="mysql逻辑架构"><a href="#mysql逻辑架构" class="headerlink" title="mysql逻辑架构"></a>mysql逻辑架构</h2><p>mysql逻辑架构，如下图所示。</p>
+<p><img src="/posts/5b906d18/image-20220330165956330.png" alt="image-20220330165956330"></p>
+<p>最上层为连接处理、授权认证、安全等。</p>
+<p>第二层架构包括查询解析、分析、优化、缓存以及所有内置函数、存储过程、视图、触发器等。</p>
+<p>第三层为存储引擎，存储引擎负责MYSQL中数据的存储与提取。</p>
+<h3 id="连接管理与安全性"><a href="#连接管理与安全性" class="headerlink" title="连接管理与安全性"></a>连接管理与安全性</h3><p>每个客户端连接都在服务器进程中拥有一个线程，这个连接的查询中会在这个单独的线程中执行，该线程只能轮流在某个CPU核心或者CPU中运行，服务器会缓存线程，因此不需要为每一个新建的连接创建或销毁线程，</p>
+<p><strong>注：</strong>与用户级线程类似</p>
+<p>当客户端连接到MySQL服务器时，服务器需要对其进行认证，认证基于用户名密码等。</p>
+<h3 id="优化与执行"><a href="#优化与执行" class="headerlink" title="优化与执行"></a>优化与执行</h3><p>mysql会解析查询，并创建内部数据结构(解析树)，然后对其进行各种优化，包括重写查询、决定表的读取顺序，以及选择合适的索引等。</p>
+<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>当我们出现一个线程要删除A表，另一个线程要读取A表，如若不进行并发控制，会出现结果不确定性。</p>
+<p>为了解决这种问题，我们有<strong>共享锁</strong>与<strong>排它锁</strong>，也叫<strong>读锁</strong>与<strong>写锁</strong>。</p>
+<ol>
+<li>读锁：读锁是共享的，即相互不阻塞。多个客户在同一时刻可以同时读取同一资源，而不互相干扰。</li>
+<li>写锁：写锁是排他的，即一个写锁会阻塞其它的写锁与读锁。</li>
+</ol>
+<h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><p>锁粒度即锁住数据的颗粒度，如锁表，锁行等。锁定数据的级别不一样。</p>
+<p><strong>表锁</strong>：会锁定整张表，一个用户在表进行写操作(插入、删除、修改等)前，需要先获得写锁，这会阻塞其他用户对该表的所有读写操作。只有在没有写锁时，其他读取的用户才获得读锁，读锁之间是不相互阻塞的。</p>
+<p><strong>行级锁</strong>：可以最大程度地支持并发处理(同时也带来锁开销)，其特性与表锁一致。</p>
+<p><strong>注</strong>：实现表锁与行级锁的必要条件是操作是原子级别的，即不可分割。</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">start transaction;</span><br><span class="line">select balance <span class="keyword">from</span> checking where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update checking <span class="built_in">set</span> <span class="attribute">balance</span>=balance-200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update savings <span class="built_in">set</span> <span class="attribute">balance</span>=balance+200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
+<p>若语句在执行到第四个语句崩溃了，用户可能会损失200元。</p>
+<p>所以我们需要系统通过ACID测试，ACID具有</p>
+<ol>
+<li>原子性</li>
+<li>一致性</li>
+<li>隔离性</li>
+<li>持久性</li>
+</ol>
+<p><strong>原子性</strong>：一个事务必须被视为一个不可分割的最小单元，整个事务要么全部提交成功，要么全部失败回滚，对于一事务来说，不可能只执行其中的一部分操作，就是事务的原子性。</p>
+<p><strong>一致性</strong>：数据库总是从一个一致性的状态转换到另外一个一致性的状态。在前面的例子中，一致性确保了，即使在执行第三、第四条语句之间时系统崩溃，支票账户也不会损失200美元，因为事务最终没有提交，所有事务中所做的修改也不会保存到数据库中。</p>
+<p><strong>隔离性</strong>：一个事务所做的修改在最终提交以前，对其他事务不可见的。在前面的例子中，当执行完第三条语句、第四要语句还未开始时，此时有另一个账户汇总程序开始运行，则其看到的支票账户的余额并没有被减去200美元。</p>
+<p><strong>持久性</strong>：一旦事务提交，则其所做的修改应付永久保存到数据库中。此时即使系统崩溃，修改的数据也不会丢失。</p>
+<p>我们将采用一个由几个账户和一个访问和更新账户的事务集合构成的简单的银行应用来阐明事务的概念。事务运用以下两个操作访问数据。</p>
+<p>read(X)：从数据库把数据项X传送到执行read操作的事务的主存缓冲区的一个也称为X的变量中。</p>
+<p>write(X)：从执行write的事务的主存缓冲区的变量X中把数据项X传回数据库中。write操作不一定立即更新磁盘上的数据；write操作的结果可以临时存储在某处，以后再写到磁盘上。目前假设write操作立即更新数据库。</p>
+<p>设$T_i$是从账户A过户$50到账户B的事务。这个事务的代码有：</p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="built_in">read</span>(X);</span><br><span class="line"><span class="selector-tag">A</span>:=A-<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(A);</span><br><span class="line"><span class="built_in">read</span>(B);</span><br><span class="line"><span class="selector-tag">B</span>:=B+<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(B);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中</p>
+<p>一致性：一致性要求事务的执行不改变A、B之和。如果没有一致性要求，金额可以能被事务凭空创造或销毁，如果数据库在事务执行前是一致的，那么事务执行数据库仍将保持一致。</p>
+<p>总而言之，一致性即在事务执行前与执行后数据的一致与逻辑的自洽。</p>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>SQL标准定义了四个隔离级别，每一种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见的，哪些是不可见的。</p>
+<p>四种隔离级别。</p>
+<p><strong>READ UNCOMMITTED(未提交读)</strong></p>
+<p>​    在READ UNCOMMITTED级别，事务中的修改，即使没有提交，对其它事务也都是可见的。事务可以读取未提交的数据，这称之为<strong>脏读</strong>。</p>
+<p><strong>READ COMMITTED(提交读)</strong></p>
+<p>​    READ COMMITTED满足前面的隔离性的简单定义：一个事务开始时，只能”看见”已经提交的事务所做的修改。即一个事务从开始直到提交之前，所做的任何修改对其他事务都是不可见的。这个级别也叫做<strong>不可重复读</strong>，因为两次执行同样的查询，可能会得到不一样的结果。</p>
+<p><strong>REPEATABLE READ(可重复读)</strong></p>
+<p>​    REPEATABLE READ解决了脏读的问题。该级别保证了在同一事务中多次读取同样记录的结果是一致的。但是可重复读隔离级别无法解决另一个<strong>幻读</strong>问题。幻读是指当某个事务在读取某个范围内的记录时，另一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围的记录时，会产生<strong>幻行</strong>。</p>
+<p><strong>可重复读是MYSQL的默认事务隔离级别</strong>。</p>
+<p><strong>SERIALIZABLE(可串行化)</strong></p>
+<p>​    SERIALIZABLE是最高的隔离级别，通过强制事务串行执行，避免了前面的幻读问题。即SERIALIZABLE会在读取的每一行数据上都加锁，所以可能会导致大量的超时与锁争用问题。实际应用中很少用到这个隔离级别，只有在非常需要确保数据的一致性而且可以接受没有并发的情况下，才考虑采用该级别。</p>
+<center>ANSI SQL隔离级别</center>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">隔离级别</th>
+<th>脏读可能性</th>
+<th>不可重复读可能性</th>
+<th>幻读可能性</th>
+<th>加锁读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">READ UNCOMMITTED</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td style="text-align:left">READ COMMITTED</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td style="text-align:left">REPEATABLE READ</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td style="text-align:left">SERIALIZABLE</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>计算机</category>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>高性能mysql</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>动手学深度学习总结</title>
     <url>/posts/b96b4738/</url>
     <content><![CDATA[<p>本章节为&lt;&lt;动手学深度学习&gt;&gt;的知识点整理。</p>
@@ -2420,117 +2531,6 @@ $$H_{t-1}$$为上一层的隐藏状态，所以这表示该层的隐藏状态与
         <tag>深度学习</tag>
         <tag>MXNet</tag>
         <tag>动手学深度学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>高性能mysql</title>
-    <url>/posts/5b906d18/</url>
-    <content><![CDATA[<p> 本文为高性能mysql知识点整理。</p>
-<span id="more"></span>
-<h1 id="mysql架构与历史"><a href="#mysql架构与历史" class="headerlink" title="mysql架构与历史"></a>mysql架构与历史</h1><h2 id="mysql逻辑架构"><a href="#mysql逻辑架构" class="headerlink" title="mysql逻辑架构"></a>mysql逻辑架构</h2><p>mysql逻辑架构，如下图所示。</p>
-<p><img src="/posts/5b906d18/image-20220330165956330.png" alt="image-20220330165956330"></p>
-<p>最上层为连接处理、授权认证、安全等。</p>
-<p>第二层架构包括查询解析、分析、优化、缓存以及所有内置函数、存储过程、视图、触发器等。</p>
-<p>第三层为存储引擎，存储引擎负责MYSQL中数据的存储与提取。</p>
-<h3 id="连接管理与安全性"><a href="#连接管理与安全性" class="headerlink" title="连接管理与安全性"></a>连接管理与安全性</h3><p>每个客户端连接都在服务器进程中拥有一个线程，这个连接的查询中会在这个单独的线程中执行，该线程只能轮流在某个CPU核心或者CPU中运行，服务器会缓存线程，因此不需要为每一个新建的连接创建或销毁线程，</p>
-<p><strong>注：</strong>与用户级线程类似</p>
-<p>当客户端连接到MySQL服务器时，服务器需要对其进行认证，认证基于用户名密码等。</p>
-<h3 id="优化与执行"><a href="#优化与执行" class="headerlink" title="优化与执行"></a>优化与执行</h3><p>mysql会解析查询，并创建内部数据结构(解析树)，然后对其进行各种优化，包括重写查询、决定表的读取顺序，以及选择合适的索引等。</p>
-<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>当我们出现一个线程要删除A表，另一个线程要读取A表，如若不进行并发控制，会出现结果不确定性。</p>
-<p>为了解决这种问题，我们有<strong>共享锁</strong>与<strong>排它锁</strong>，也叫<strong>读锁</strong>与<strong>写锁</strong>。</p>
-<ol>
-<li>读锁：读锁是共享的，即相互不阻塞。多个客户在同一时刻可以同时读取同一资源，而不互相干扰。</li>
-<li>写锁：写锁是排他的，即一个写锁会阻塞其它的写锁与读锁。</li>
-</ol>
-<h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><p>锁粒度即锁住数据的颗粒度，如锁表，锁行等。锁定数据的级别不一样。</p>
-<p><strong>表锁</strong>：会锁定整张表，一个用户在表进行写操作(插入、删除、修改等)前，需要先获得写锁，这会阻塞其他用户对该表的所有读写操作。只有在没有写锁时，其他读取的用户才获得读锁，读锁之间是不相互阻塞的。</p>
-<p><strong>行级锁</strong>：可以最大程度地支持并发处理(同时也带来锁开销)，其特性与表锁一致。</p>
-<p><strong>注</strong>：实现表锁与行级锁的必要条件是操作是原子级别的，即不可分割。</p>
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">start transaction;</span><br><span class="line">select balance <span class="keyword">from</span> checking where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update checking <span class="built_in">set</span> <span class="attribute">balance</span>=balance-200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update savings <span class="built_in">set</span> <span class="attribute">balance</span>=balance+200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
-<p>若语句在执行到第四个语句崩溃了，用户可能会损失200元。</p>
-<p>所以我们需要系统通过ACID测试，ACID具有</p>
-<ol>
-<li>原子性</li>
-<li>一致性</li>
-<li>隔离性</li>
-<li>持久性</li>
-</ol>
-<p><strong>原子性</strong>：一个事务必须被视为一个不可分割的最小单元，整个事务要么全部提交成功，要么全部失败回滚，对于一事务来说，不可能只执行其中的一部分操作，就是事务的原子性。</p>
-<p><strong>一致性</strong>：数据库总是从一个一致性的状态转换到另外一个一致性的状态。在前面的例子中，一致性确保了，即使在执行第三、第四条语句之间时系统崩溃，支票账户也不会损失200美元，因为事务最终没有提交，所有事务中所做的修改也不会保存到数据库中。</p>
-<p><strong>隔离性</strong>：一个事务所做的修改在最终提交以前，对其他事务不可见的。在前面的例子中，当执行完第三条语句、第四要语句还未开始时，此时有另一个账户汇总程序开始运行，则其看到的支票账户的余额并没有被减去200美元。</p>
-<p><strong>持久性</strong>：一旦事务提交，则其所做的修改应付永久保存到数据库中。此时即使系统崩溃，修改的数据也不会丢失。</p>
-<p>我们将采用一个由几个账户和一个访问和更新账户的事务集合构成的简单的银行应用来阐明事务的概念。事务运用以下两个操作访问数据。</p>
-<p>read(X)：从数据库把数据项X传送到执行read操作的事务的主存缓冲区的一个也称为X的变量中。</p>
-<p>write(X)：从执行write的事务的主存缓冲区的变量X中把数据项X传回数据库中。write操作不一定立即更新磁盘上的数据；write操作的结果可以临时存储在某处，以后再写到磁盘上。目前假设write操作立即更新数据库。</p>
-<p>设$T_i$是从账户A过户$50到账户B的事务。这个事务的代码有：</p>
-<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="built_in">read</span>(X);</span><br><span class="line"><span class="selector-tag">A</span>:=A-<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(A);</span><br><span class="line"><span class="built_in">read</span>(B);</span><br><span class="line"><span class="selector-tag">B</span>:=B+<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(B);</span><br></pre></td></tr></table></figure>
-<p>在这个例子中</p>
-<p>一致性：一致性要求事务的执行不改变A、B之和。如果没有一致性要求，金额可以能被事务凭空创造或销毁，如果数据库在事务执行前是一致的，那么事务执行数据库仍将保持一致。</p>
-<p>总而言之，一致性即在事务执行前与执行后数据的一致与逻辑的自洽。</p>
-<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>SQL标准定义了四个隔离级别，每一种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见的，哪些是不可见的。</p>
-<p>四种隔离级别。</p>
-<p><strong>READ UNCOMMITTED(未提交读)</strong></p>
-<p>​    在READ UNCOMMITTED级别，事务中的修改，即使没有提交，对其它事务也都是可见的。事务可以读取未提交的数据，这称之为<strong>脏读</strong>。</p>
-<p><strong>READ COMMITTED(提交读)</strong></p>
-<p>​    READ COMMITTED满足前面的隔离性的简单定义：一个事务开始时，只能”看见”已经提交的事务所做的修改。即一个事务从开始直到提交之前，所做的任何修改对其他事务都是不可见的。这个级别也叫做<strong>不可重复读</strong>，因为两次执行同样的查询，可能会得到不一样的结果。</p>
-<p><strong>REPEATABLE READ(可重复读)</strong></p>
-<p>​    REPEATABLE READ解决了脏读的问题。该级别保证了在同一事务中多次读取同样记录的结果是一致的。但是可重复读隔离级别无法解决另一个<strong>幻读</strong>问题。幻读是指当某个事务在读取某个范围内的记录时，另一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围的记录时，会产生<strong>幻行</strong>。</p>
-<p><strong>可重复读是MYSQL的默认事务隔离级别</strong>。</p>
-<p><strong>SERIALIZABLE(可串行化)</strong></p>
-<p>​    SERIALIZABLE是最高的隔离级别，通过强制事务串行执行，避免了前面的幻读问题。即SERIALIZABLE会在读取的每一行数据上都加锁，所以可能会导致大量的超时与锁争用问题。实际应用中很少用到这个隔离级别，只有在非常需要确保数据的一致性而且可以接受没有并发的情况下，才考虑采用该级别。</p>
-<center>ANSI SQL隔离级别</center>
-
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">隔离级别</th>
-<th>脏读可能性</th>
-<th>不可重复读可能性</th>
-<th>幻读可能性</th>
-<th>加锁读</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">READ UNCOMMITTED</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td style="text-align:left">READ COMMITTED</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td style="text-align:left">REPEATABLE READ</td>
-<td>no</td>
-<td>no</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td style="text-align:left">SERIALIZABLE</td>
-<td>no</td>
-<td>no</td>
-<td>no</td>
-<td>yes</td>
-</tr>
-</tbody>
-</table>
-</div>
-]]></content>
-      <categories>
-        <category>计算机</category>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
-        <tag>高性能mysql</tag>
       </tags>
   </entry>
 </search>
