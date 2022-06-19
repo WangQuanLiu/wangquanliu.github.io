@@ -1,6 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>er图基本概念整理</title>
+    <url>/posts/417c8dba/</url>
+    <content><![CDATA[<p>本文为ER图基本概念笔记的整理。</p>
+<span id="more"></span>
+<p>er图的图形所代表的含义如下图所示</p>
+<p><img src="/posts/417c8dba/20210507233721682.png" alt="20210507233721682"></p>
+<h2 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h2><p>实体表示一个具体的类，如用户、订单等，即一个实体对象。</p>
+<p><img src="/posts/417c8dba/v2-d135de9a82ab5c99826cb63e0609ba51_r.png" alt="v2-d135de9a82ab5c99826cb63e0609ba51_r"></p>
+<h2 id="弱实体"><a href="#弱实体" class="headerlink" title="弱实体"></a>弱实体</h2><p>它衍生出来的为弱实体，即若B是依赖于A而存在的，则B为弱实体，如学生与成绩单的关系。</p>
+<p><img src="/posts/417c8dba/v2-3809fb1447f349737f0d4ca60ddb4128_1440w.png" alt="v2-3809fb1447f349737f0d4ca60ddb4128_1440w"></p>
+<h2 id="联合实体"><a href="#联合实体" class="headerlink" title="联合实体"></a>联合实体</h2><p>联合实体常用于实现两个或多个实体间的M:N的联系。</p>
+<p>下图为一个联合实体，因为用户与订单之间1：N的关系，又订单对于用户来讲是一个弱实体，同理订单对于商品而言也是一个弱实体，他们都是如何自身不存在，那么订单本身将无法创建。</p>
+<p><img src="/posts/417c8dba/v2-9ccb315f567c43d2d88e45481f11ba7b_r.png" alt="v2-9ccb315f567c43d2d88e45481f11ba7b_r"></p>
+<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>属性表示一个具体类所拥有的特性或者特征，具体而言，如用户有账号、用户名、密码等特性。</p>
+<h2 id="多值属性"><a href="#多值属性" class="headerlink" title="多值属性"></a>多值属性</h2><p>其衍生出来的多值属性，表示一个类可能具有多个这样的属性，如用户里面的电话号码，一个用户可以有多个电话号码。</p>
+<p>在下图，对于书本来讲分类就是一个多值属性。</p>
+<p><img src="/posts/417c8dba/v2-ae1112c97b59789dda7b35e22d877daf_1440w.png" alt="v2-ae1112c97b59789dda7b35e22d877daf_1440w"></p>
+<h2 id="派生属性"><a href="#派生属性" class="headerlink" title="派生属性"></a>派生属性</h2><p>派生属性表示是由其它属性进行推理出来的，需要经过一系列的计算才能出来的属性，在其表中不存在，如由身份证号码推测出用户的年龄。</p>
+<h2 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h2><p>关系表示两个实体之间的联系，弱关系通常配合着弱实体一起使用。</p>
+]]></content>
+      <categories>
+        <category>计算机</category>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>er图</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Qt5.9-开发指南</title>
     <url>/posts/4fb3f4ca/</url>
     <content><![CDATA[<p>本文为QT，C++开发知识点整理。</p>
@@ -172,32 +201,109 @@
       </tags>
   </entry>
   <entry>
-    <title>er图基本概念整理</title>
-    <url>/posts/417c8dba/</url>
-    <content><![CDATA[<p>本文为ER图基本概念笔记的整理。</p>
+    <title>吴恩达深度学习</title>
+    <url>/posts/89451192/</url>
+    <content><![CDATA[<p>吴恩达机器学习与深度学习总结。</p>
 <span id="more"></span>
-<p>er图的图形所代表的含义如下图所示</p>
-<p><img src="/posts/417c8dba/20210507233721682.png" alt="20210507233721682"></p>
-<h2 id="实体"><a href="#实体" class="headerlink" title="实体"></a>实体</h2><p>实体表示一个具体的类，如用户、订单等，即一个实体对象。</p>
-<p><img src="/posts/417c8dba/v2-d135de9a82ab5c99826cb63e0609ba51_r.png" alt="v2-d135de9a82ab5c99826cb63e0609ba51_r"></p>
-<h2 id="弱实体"><a href="#弱实体" class="headerlink" title="弱实体"></a>弱实体</h2><p>它衍生出来的为弱实体，即若B是依赖于A而存在的，则B为弱实体，如学生与成绩单的关系。</p>
-<p><img src="/posts/417c8dba/v2-3809fb1447f349737f0d4ca60ddb4128_1440w.png" alt="v2-3809fb1447f349737f0d4ca60ddb4128_1440w"></p>
-<h2 id="联合实体"><a href="#联合实体" class="headerlink" title="联合实体"></a>联合实体</h2><p>联合实体常用于实现两个或多个实体间的M:N的联系。</p>
-<p>下图为一个联合实体，因为用户与订单之间1：N的关系，又订单对于用户来讲是一个弱实体，同理订单对于商品而言也是一个弱实体，他们都是如何自身不存在，那么订单本身将无法创建。</p>
-<p><img src="/posts/417c8dba/v2-9ccb315f567c43d2d88e45481f11ba7b_r.png" alt="v2-9ccb315f567c43d2d88e45481f11ba7b_r"></p>
-<h2 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h2><p>属性表示一个具体类所拥有的特性或者特征，具体而言，如用户有账号、用户名、密码等特性。</p>
-<h2 id="多值属性"><a href="#多值属性" class="headerlink" title="多值属性"></a>多值属性</h2><p>其衍生出来的多值属性，表示一个类可能具有多个这样的属性，如用户里面的电话号码，一个用户可以有多个电话号码。</p>
-<p>在下图，对于书本来讲分类就是一个多值属性。</p>
-<p><img src="/posts/417c8dba/v2-ae1112c97b59789dda7b35e22d877daf_1440w.png" alt="v2-ae1112c97b59789dda7b35e22d877daf_1440w"></p>
-<h2 id="派生属性"><a href="#派生属性" class="headerlink" title="派生属性"></a>派生属性</h2><p>派生属性表示是由其它属性进行推理出来的，需要经过一系列的计算才能出来的属性，在其表中不存在，如由身份证号码推测出用户的年龄。</p>
-<h2 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h2><p>关系表示两个实体之间的联系，弱关系通常配合着弱实体一起使用。</p>
+<h1 id="梯度下降原理"><a href="#梯度下降原理" class="headerlink" title="梯度下降原理"></a>梯度下降原理</h1><h2 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h2><h3 id="代价函数定义"><a href="#代价函数定义" class="headerlink" title="代价函数定义"></a>代价函数定义</h3><p>梯度下降算法—求最小代价函数的一种算法，通过不断变幻参数使得找到最小代价函数，代价函数的定义</p>
+<p><img src="/posts/89451192/梯度下降算法代价函数的定义.png" alt="梯度下降算法代价函数的定义"></p>
+<h3 id="算法概要"><a href="#算法概要" class="headerlink" title="算法概要"></a>算法概要</h3><p><img src="/posts/89451192/梯度下降算法概要.png" alt="梯度下降算法概要"></p>
+<p><strong>注：a表示学习率下降得多快</strong></p>
+<h3 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a>算法详解</h3><p><img src="/posts/89451192/梯度下降算法详解.png" alt="梯度下降算法详解"></p>
+<h2 id><a href="#" class="headerlink" title=" "></a> </h2><p>当 <script type="math/tex">\theta_1</script>在右边时，由于导数为x轴的<script type="math/tex">\Delta x</script> 与y轴的 <script type="math/tex">\Delta y</script>的比值，又由于<script type="math/tex">\theta_1</script> 在右边，故 <script type="math/tex">\Delta x</script>与  <script type="math/tex">\Delta y</script>皆为正数所以其导数为正，通过公式<script type="math/tex">\theta_1=\theta_1-a\frac{d}{d\theta_1}J(\theta_1)</script>，参数<script type="math/tex">\theta_1</script>会向右趋近。<br>当  <script type="math/tex">\theta_1</script>在左边时，由于<script type="math/tex">\Delta x</script>  为正数与 <script type="math/tex">\Delta y</script>为负数，故其导数为负数，通过上面公式<script type="math/tex">\theta_1=\theta_1-a\frac{d}{d\theta_1}J(\theta_1)</script> ，参数<script type="math/tex">\theta_1</script>会向左进行趋近，无论<script type="math/tex">\theta_1</script> 在其极小值的左边或右边皆向极小值逼进，通过一系列的趋近，最终目的是使得参数<script type="math/tex">\theta_1</script>趋近于最小值。<br>此算法通过不断迭代直到极小值，当 <script type="math/tex">\theta_1</script> 为极小值点时其导数斜率趋向于某个值 ，此时斜率发生的变化极小  </p>
+<p><strong>注：我们需要合理调整学习率</strong></p>
+<p>当学习率a过大时，会导致<script type="math/tex">\frac{\Delta x}{\Delta y}</script>过大，就有</p>
+<p><img src="/posts/89451192/学习率1.png" alt="学习率1" style="zoom:60%;"></p>
+<p>当学习率过大时，会导致</p>
+<p><img src="/posts/89451192/学习率2.png" alt="学习率2" style="zoom:60%;"></p>
+<p>这样会导致从右边直接跨过极小点，直接到左边的位置，这是学习率过大导致的情况。</p>
+<p>而若学习率过小会导致需要多次迭代。</p>
+<h1 id="神经网络原理"><a href="#神经网络原理" class="headerlink" title="神经网络原理"></a>神经网络原理</h1><h2 id="神经网络梯度下降算法"><a href="#神经网络梯度下降算法" class="headerlink" title="神经网络梯度下降算法"></a>神经网络梯度下降算法</h2><p><img src="/posts/89451192/神经网络的梯度下降.png" alt="神经网络的梯度下降"></p>
+<p>如图所示，我们有参数w,b，代价函数<script type="math/tex">J(w^{(1)},b^{1},w^{2},b^{2})=\frac{1}{m}\sum_{i=1}^{m}\iota(y^*,y)</script>，我们需要通过<script type="math/tex">dw^{(l)}</script>和<script type="math/tex">db^{(l)}</script>来更新梯度下降，使得参数<script type="math/tex">w^{(l)}</script>和<script type="math/tex">b^{(l)}</script>来更新。</p>
+<h2 id="神经网络反向传播详解"><a href="#神经网络反向传播详解" class="headerlink" title="神经网络反向传播详解"></a>神经网络反向传播详解</h2><p>神经网络的计算是按照正向传播与反向传播过程来实现的，首先通过正向传播计算出神经网络的输出，紧接着进行一个反向传播，反向传播可以计算出对应的梯度或导数，即正向传播服务于反向传播，反向传播服务于导数的计算。依赖关系导数-&gt;反向传播-&gt;正向传播。</p>
+<p>我们来通过计算图进行分析。</p>
+<h3 id="计算图求导数"><a href="#计算图求导数" class="headerlink" title="计算图求导数"></a>计算图求导数</h3><p><img src="/posts/89451192/计算图1.png" alt="计算图1"></p>
+<p>如图我们想要计算函数J(a,b,c)的值，其中</p>
+<script type="math/tex; mode=display">
+J(a,b,c)=3(a+bc)=3(5+3*2)=33</script><p>我们计算函数J，可以进行如下步骤的拆分 </p>
+<script type="math/tex; mode=display">
+U=bc \\
+V=a+u \\
+J=3V</script><p>我们可以得到如下计算图</p>
+<p><img src="/posts/89451192/计算图2.png" alt="计算图2"></p>
+<p>当结果有不同或者一些特殊的输出变量时，比如J也是我们想要优化，在logistic回归中，J也是想要最小化的成本函数，可以看出，一个从左到右的过程，可以计算出函数J的值。接下来我们将会看到为了计算导数数，从右到左的过程。</p>
+<p><img src="/posts/89451192/使用计算图求导1.png" alt="使用计算图求导1"></p>
+<p>假设我们要计算<script type="math/tex">\frac{dJ}{dV}</script>，我们应该怎么计算呢？</p>
+<p>我们若改变V的值，那么J将如何改变呢？</p>
+<p>我们有<script type="math/tex">J=3V</script>，我们将<script type="math/tex">V=11</script>，变化为V=11.001，而J=33变化为33.003，<br>即我们可以得到我们在x轴变动1，而<script type="math/tex">\frac{dJ}{dV}=3</script> ，我们y轴将变化的动静为x轴的3倍，又当我们令a=5变化成a=5.001， v=11.001， J=33.003，即a的波动影响v， 而影响J，又我们有链式法则<script type="math/tex">\frac{dJ}{da}=\frac{dJ}{dv}\frac{dv}{da}=3</script> ，即若我们要计算<script type="math/tex">\frac{dJ}{da}</script>， 需要先计算出<script type="math/tex">\frac{dJ}{dv}</script> 和<script type="math/tex">\frac{dv}{da}</script>  。</p>
+<p><img src="/posts/89451192/使用计算图求导2.png" alt="使用计算图求导2"></p>
+<p>可以通过上面的方法求出各导数，反向传播原理与上面过程相同。</p>
+<h3 id="神经模型"><a href="#神经模型" class="headerlink" title="神经模型"></a>神经模型</h3><p><img src="/posts/89451192/神经模型1.png" alt="神经模型1"></p>
+<p>神经模型中的单个逻辑单元如上图所示，通过输入x0,x1,…,xn得到一个逻辑激活函数，这称之为逻辑激活函数 。<br>逻辑激活函数即  </p>
+<script type="math/tex; mode=display">
+g(z)=\frac{1}{1+e^{-z}}</script><p><img src="/posts/89451192/神经模型2.png" alt="神经模型2"></p>
+<p>在上图中是由一组神经元组合而成的神经网络，其中最左边的为输入层，中间为隐藏层，最右边的为输出层。</p>
+<p><img src="/posts/89451192/神经模型3.png" alt="神经模型3"></p>
+<p>在上图中 示神经网络共有三层，第一层 示输入，中间层 示隐藏层，第三层示输出层。其中<script type="math/tex">a_i^{(j)}</script> 示第j层的第i个激活单元，<script type="math/tex">\theta^{j}</script>表示权重控制的矩阵函数从第j 层映射到第 j+1层。如果神经网络在第j层有<script type="math/tex">s_j</script>单元在第j+1层有<script type="math/tex">s_j+1</script>单元然后<script type="math/tex">\theta^{(j)}</script>有维度  </p>
+<script type="math/tex; mode=display">
+s_{j+1}\times(s_j+1)</script><p>向前传播是指从第一层传播到第三层，以这样的方式进行传播，即从输入层传播到输出层  </p>
+<p><img src="/posts/89451192/神经模型4.png" alt="神经模型4"></p>
+<p>我们对向前传播进行向量化，我们变化为</p>
+<script type="math/tex; mode=display">
+z_1^{(2)}=\theta_{10}^{(1)}x_0+\theta_{11}^{(1)}x_1+\theta_{12}^{(1)}x_2+\theta_{13}^{(1)}x_3 \\
+z_2^{(2)}=\theta_{20}^{(1)}x_0+\theta_{21}^{(1)}x_1+\theta_{22}^{(1)}x_2+\theta_{23}^{(1)}x_3 \\
+z_3^{(2)}=\theta_{30}^{(1)}x_0+\theta_{31}^{(1)}x_1+\theta_{32}^{(1)}x_2+\theta_{33}^{(1)}x_3</script><p>其中</p>
+<script type="math/tex; mode=display">
+z^{(2)}=\theta^{(1)}x=\theta^{(1)}a^{(1)}\\
+a^{(2)}=g(z^{(2)})\\
+z^{(3)}=\theta^{(2)}x=\theta^{(2)}a^{(2)}\\
+h_{\theta}(x)=a^{(3)}=g(z^{(3)})</script><h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p><img src="/posts/89451192/代价函数1.png" alt="代价函数1"></p>
+<p>在神经网络中，我们若要实行多元分类，我们需要通过输入样本数据<script type="math/tex">x^{(i)}</script>，然后输出数据<script type="math/tex">y^{(i)}</script>分类的矩阵，我们需要使得函数<script type="math/tex">h_\theta(x)</script>来近似于<script type="math/tex">y^{(i)}</script>来对不同的数据进行分类。</p>
+<p><img src="/posts/89451192/代价函数2.png" alt="代价函数2"></p>
+<p>神经网络的代价函数如下：  </p>
+<script type="math/tex; mode=display">
+J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}\sum _{k=1}^{k} y^{(i)}_{k}log(h_{\theta}(x^{(i)})_k)+(1-y^{(i)}_k)log(1-h_{\theta}(x^{(i)})_k)]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\theta_{ji}^{(l)})^2</script><p>其中<script type="math/tex">(h_{\theta}(x))_i=i^{th} output</script> 表示第i个输出函数，因为在神经网络中有多个输入项，所以有多个代价函数，在这个式子中代价函数数为k,即k个输出函数(项),所以第一项为上式所 示,故有第 一项为  </p>
+<script type="math/tex; mode=display">
+J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}\sum _{k=1}^{k} y^{(i)}_{k}log(h_{\theta}(x^{(i)})_k)+(1-y^{(i)}_k)log(1-h_{\theta}(x^{(i)})_k)]</script><p>在第二项中， 示有L层，而因为 由上一层与连接下一层而形成的，所以个数也为两层的乘积，而后有从1到L-1，故有第二项为  </p>
+<script type="math/tex; mode=display">
+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\theta_{ji}^{(l)})^2</script><h3 id="反向传播过程"><a href="#反向传播过程" class="headerlink" title="反向传播过程"></a>反向传播过程</h3><p>反向传播可以计算出在神经网络中各个节点的导数，我们再通过梯度下降算法来进行目标函数的最小化。</p>
+<p><img src="/posts/89451192/反向传播1.png" alt="反向传播1"></p>
+<p>在上图中我们的最终目的是寻找最小化 <script type="math/tex">J(\theta)</script></p>
+<p><img src="/posts/89451192/反向传播2.png" alt="反向传播2"></p>
+<p>反射传播从直观上来说就是计算每一层的每个节点的误差，在上图中就是计算第三层的各个节点的误差，而后计算第二层的各个节点的误差，最后计算第一层的各个节点的误差，其中</p>
+<script type="math/tex; mode=display">
+\frac{\partial}{\partial \theta^{(l)}_{ij}}J(\theta)=a_j^{(l)}\delta_i^{(l+1)}</script><p>我们有梯度下降的正向传播过程以及涉及的参数如下  </p>
+<p><img src="/posts/89451192/反向传播3.png" alt="反向传播3"></p>
+<p>梯度下降算法中的反射传播算法过程如下  </p>
+<p><img src="/posts/89451192/反向传播4.png" alt="反向传播4"></p>
+<p>其中反向传播算法如下：</p>
+<p><img src="/posts/89451192/反向传播5.png" alt="反向传播5"></p>
+<p>其中符号<script type="math/tex">\Delta</script>，其中l表示神经网络的层数，i表示样本数，j表示神经网络中某层的第几个节点</p>
+<p>算法步骤解释如下：</p>
+<p>一、设置所有符号<script type="math/tex">\Delta_{ij}^{(l)}</script>均为0.</p>
+<p>二、设置从样本1到m的循环，即遍历所有样本.</p>
+<p>三、在循环中设置输入参数为<script type="math/tex">a^{(1)}</script>.</p>
+<p>四、执行正向传播算法，求得各层的<script type="math/tex">a^{(l)}</script>.</p>
+<p>五、使用结果<script type="math/tex">y^{(i)}</script>来计算输出层的差值<script type="math/tex">\delta^{(l)}</script>.</p>
+<p>六、计算隐藏层的差值<script type="math/tex">\delta^{(l-1)},\delta^{(l-2)}...</script></p>
+<p>七、计算每个样本的各层的各个节点的<script type="math/tex">\Delta_{ij}^{(l)}</script>,其中式子</p>
+<script type="math/tex; mode=display">
+\Delta_{ij}^{(l)}=\Delta_{ij}^{(l)}+a_{j}^{(l)}\delta_i^{(l+1)}</script><p>当<script type="math/tex">J(\theta)</script>的m为1，且无正则项时，</p>
+<script type="math/tex; mode=display">
+\frac {\partial}{\partial \theta_{ij}^{(l)}}J(\theta)=a_j^{(l)}\delta_i^{(l+1)}</script><p>八、 我们计算各样本各层节点的<script type="math/tex">D_{ij}^{(l)}</script>，<script type="math/tex">\frac{\partial}{\partial \theta_{ij}^{(l)}}=D_{ij}^{(l)}</script>，此处的函数<script type="math/tex">J(\theta)</script>m不等于1且有正则项的分两种情况，当</p>
+<script type="math/tex; mode=display">
+D_{ij}^{(l)}=\frac{1}{m}\Delta_{ij}^{(l)}+\lambda \theta_{ij}^{(l)} \:\:\: if\:\: j\neq0(非偏置项) \\
+D_{ij}^{(l)}=\frac{1}{m}\Delta_{ij}^{(l)}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\:\: j\neq0(偏置项)</script><p>为什么此时是<script type="math/tex">\lambda \theta_{ij}^{(l)}</script>不是<script type="math/tex">\frac{\lambda }{m}\theta_{ij}^{(l)}</script>暂时不清楚</p>
+<h3 id="反向传播算法的理解与推导"><a href="#反向传播算法的理解与推导" class="headerlink" title="反向传播算法的理解与推导"></a>反向传播算法的理解与推导</h3><p><img src="/posts/89451192/image-20220619151637481-16556230021951.png" alt="image-20220619151637481"></p>
 ]]></content>
       <categories>
         <category>计算机</category>
-        <category>数据库</category>
+        <category>机器学习</category>
       </categories>
       <tags>
-        <tag>er图</tag>
+        <tag>深度学习</tag>
+        <tag>机器学习</tag>
+        <tag>吴恩达</tag>
       </tags>
   </entry>
   <entry>
@@ -1541,112 +1647,6 @@ FULLTEXT索引，也可以使用它。  </font>
       </tags>
   </entry>
   <entry>
-    <title>吴恩达深度学习</title>
-    <url>/posts/89451192/</url>
-    <content><![CDATA[<p>吴恩达机器学习与深度学习总结。</p>
-<span id="more"></span>
-<h1 id="梯度下降原理"><a href="#梯度下降原理" class="headerlink" title="梯度下降原理"></a>梯度下降原理</h1><h2 id="梯度下降算法"><a href="#梯度下降算法" class="headerlink" title="梯度下降算法"></a>梯度下降算法</h2><h3 id="代价函数定义"><a href="#代价函数定义" class="headerlink" title="代价函数定义"></a>代价函数定义</h3><p>梯度下降算法—求最小代价函数的一种算法，通过不断变幻参数使得找到最小代价函数，代价函数的定义</p>
-<p><img src="/posts/89451192/梯度下降算法代价函数的定义.png" alt="梯度下降算法代价函数的定义"></p>
-<h3 id="算法概要"><a href="#算法概要" class="headerlink" title="算法概要"></a>算法概要</h3><p><img src="/posts/89451192/梯度下降算法概要.png" alt="梯度下降算法概要"></p>
-<p><strong>注：a表示学习率下降得多快</strong></p>
-<h3 id="算法详解"><a href="#算法详解" class="headerlink" title="算法详解"></a>算法详解</h3><p><img src="/posts/89451192/梯度下降算法详解.png" alt="梯度下降算法详解"></p>
-<h2 id><a href="#" class="headerlink" title=" "></a> </h2><p>当 <script type="math/tex">\theta_1</script>在右边时，由于导数为x轴的<script type="math/tex">\Delta x</script> 与y轴的 <script type="math/tex">\Delta y</script>的比值，又由于<script type="math/tex">\theta_1</script> 在右边，故 <script type="math/tex">\Delta x</script>与  <script type="math/tex">\Delta y</script>皆为正数所以其导数为正，通过公式<script type="math/tex">\theta_1=\theta_1-a\frac{d}{d\theta_1}J(\theta_1)</script>，参数<script type="math/tex">\theta_1</script>会向右趋近。<br>当  <script type="math/tex">\theta_1</script>在左边时，由于<script type="math/tex">\Delta x</script>  为正数与 <script type="math/tex">\Delta y</script>为负数，故其导数为负数，通过上面公式<script type="math/tex">\theta_1=\theta_1-a\frac{d}{d\theta_1}J(\theta_1)</script> ，参数<script type="math/tex">\theta_1</script>会向左进行趋近，无论<script type="math/tex">\theta_1</script> 在其极小值的左边或右边皆向极小值逼进，通过一系列的趋近，最终目的是使得参数<script type="math/tex">\theta_1</script>趋近于最小值。<br>此算法通过不断迭代直到极小值，当 <script type="math/tex">\theta_1</script> 为极小值点时其导数斜率趋向于某个值 ，此时斜率发生的变化极小  </p>
-<p><strong>注：我们需要合理调整学习率</strong></p>
-<p>当学习率a过大时，会导致<script type="math/tex">\frac{\Delta x}{\Delta y}</script>过大，就有</p>
-<p><img src="/posts/89451192/学习率1.png" alt="学习率1" style="zoom:60%;"></p>
-<p>当学习率过大时，会导致</p>
-<p><img src="/posts/89451192/学习率2.png" alt="学习率2" style="zoom:60%;"></p>
-<p>这样会导致从右边直接跨过极小点，直接到左边的位置，这是学习率过大导致的情况。</p>
-<p>而若学习率过小会导致需要多次迭代。</p>
-<h1 id="神经网络原理"><a href="#神经网络原理" class="headerlink" title="神经网络原理"></a>神经网络原理</h1><h2 id="神经网络梯度下降算法"><a href="#神经网络梯度下降算法" class="headerlink" title="神经网络梯度下降算法"></a>神经网络梯度下降算法</h2><p><img src="/posts/89451192/神经网络的梯度下降.png" alt="神经网络的梯度下降"></p>
-<p>如图所示，我们有参数w,b，代价函数<script type="math/tex">J(w^{(1)},b^{1},w^{2},b^{2})=\frac{1}{m}\sum_{i=1}^{m}\iota(y^*,y)</script>，我们需要通过<script type="math/tex">dw^{(l)}</script>和<script type="math/tex">db^{(l)}</script>来更新梯度下降，使得参数<script type="math/tex">w^{(l)}</script>和<script type="math/tex">b^{(l)}</script>来更新。</p>
-<h2 id="神经网络反向传播详解"><a href="#神经网络反向传播详解" class="headerlink" title="神经网络反向传播详解"></a>神经网络反向传播详解</h2><p>神经网络的计算是按照正向传播与反向传播过程来实现的，首先通过正向传播计算出神经网络的输出，紧接着进行一个反向传播，反向传播可以计算出对应的梯度或导数，即正向传播服务于反向传播，反向传播服务于导数的计算。依赖关系导数-&gt;反向传播-&gt;正向传播。</p>
-<p>我们来通过计算图进行分析。</p>
-<h3 id="计算图求导数"><a href="#计算图求导数" class="headerlink" title="计算图求导数"></a>计算图求导数</h3><p><img src="/posts/89451192/计算图1.png" alt="计算图1"></p>
-<p>如图我们想要计算函数J(a,b,c)的值，其中</p>
-<script type="math/tex; mode=display">
-J(a,b,c)=3(a+bc)=3(5+3*2)=33</script><p>我们计算函数J，可以进行如下步骤的拆分 </p>
-<script type="math/tex; mode=display">
-U=bc \\
-V=a+u \\
-J=3V</script><p>我们可以得到如下计算图</p>
-<p><img src="/posts/89451192/计算图2.png" alt="计算图2"></p>
-<p>当结果有不同或者一些特殊的输出变量时，比如J也是我们想要优化，在logistic回归中，J也是想要最小化的成本函数，可以看出，一个从左到右的过程，可以计算出函数J的值。接下来我们将会看到为了计算导数数，从右到左的过程。</p>
-<p><img src="/posts/89451192/使用计算图求导1.png" alt="使用计算图求导1"></p>
-<p>假设我们要计算<script type="math/tex">\frac{dJ}{dV}</script>，我们应该怎么计算呢？</p>
-<p>我们若改变V的值，那么J将如何改变呢？</p>
-<p>我们有<script type="math/tex">J=3V</script>，我们将<script type="math/tex">V=11</script>，变化为V=11.001，而J=33变化为33.003，<br>即我们可以得到我们在x轴变动1，而<script type="math/tex">\frac{dJ}{dV}=3</script> ，我们y轴将变化的动静为x轴的3倍，又当我们令a=5变化成a=5.001， v=11.001， J=33.003，即a的波动影响v， 而影响J，又我们有链式法则<script type="math/tex">\frac{dJ}{da}=\frac{dJ}{dv}\frac{dv}{da}=3</script> ，即若我们要计算<script type="math/tex">\frac{dJ}{da}</script>， 需要先计算出<script type="math/tex">\frac{dJ}{dv}</script> 和<script type="math/tex">\frac{dv}{da}</script>  。</p>
-<p><img src="/posts/89451192/使用计算图求导2.png" alt="使用计算图求导2"></p>
-<p>可以通过上面的方法求出各导数，反向传播原理与上面过程相同。</p>
-<h3 id="神经模型"><a href="#神经模型" class="headerlink" title="神经模型"></a>神经模型</h3><p><img src="/posts/89451192/神经模型1.png" alt="神经模型1"></p>
-<p>神经模型中的单个逻辑单元如上图所示，通过输入x0,x1,…,xn得到一个逻辑激活函数，这称之为逻辑激活函数 。<br>逻辑激活函数即  </p>
-<script type="math/tex; mode=display">
-g(z)=\frac{1}{1+e^{-z}}</script><p><img src="/posts/89451192/神经模型2.png" alt="神经模型2"></p>
-<p>在上图中是由一组神经元组合而成的神经网络，其中最左边的为输入层，中间为隐藏层，最右边的为输出层。</p>
-<p><img src="/posts/89451192/神经模型3.png" alt="神经模型3"></p>
-<p>在上图中 示神经网络共有三层，第一层 示输入，中间层 示隐藏层，第三层示输出层。其中<script type="math/tex">a_i^{(j)}</script> 示第j层的第i个激活单元，<script type="math/tex">\theta^{j}</script>表示权重控制的矩阵函数从第j 层映射到第 j+1层。如果神经网络在第j层有<script type="math/tex">s_j</script>单元在第j+1层有<script type="math/tex">s_j+1</script>单元然后<script type="math/tex">\theta^{(j)}</script>有维度  </p>
-<script type="math/tex; mode=display">
-s_{j+1}\times(s_j+1)</script><p>向前传播是指从第一层传播到第三层，以这样的方式进行传播，即从输入层传播到输出层  </p>
-<p><img src="/posts/89451192/神经模型4.png" alt="神经模型4"></p>
-<p>我们对向前传播进行向量化，我们变化为</p>
-<script type="math/tex; mode=display">
-z_1^{(2)}=\theta_{10}^{(1)}x_0+\theta_{11}^{(1)}x_1+\theta_{12}^{(1)}x_2+\theta_{13}^{(1)}x_3 \\
-z_2^{(2)}=\theta_{20}^{(1)}x_0+\theta_{21}^{(1)}x_1+\theta_{22}^{(1)}x_2+\theta_{23}^{(1)}x_3 \\
-z_3^{(2)}=\theta_{30}^{(1)}x_0+\theta_{31}^{(1)}x_1+\theta_{32}^{(1)}x_2+\theta_{33}^{(1)}x_3</script><p>其中</p>
-<script type="math/tex; mode=display">
-z^{(2)}=\theta^{(1)}x=\theta^{(1)}a^{(1)}\\
-a^{(2)}=g(z^{(2)})\\
-z^{(3)}=\theta^{(2)}x=\theta^{(2)}a^{(2)}\\
-h_{\theta}(x)=a^{(3)}=g(z^{(3)})</script><h3 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h3><p><img src="/posts/89451192/代价函数1.png" alt="代价函数1"></p>
-<p>在神经网络中，我们若要实行多元分类，我们需要通过输入样本数据<script type="math/tex">x^{(i)}</script>，然后输出数据<script type="math/tex">y^{(i)}</script>分类的矩阵，我们需要使得函数<script type="math/tex">h_\theta(x)</script>来近似于<script type="math/tex">y^{(i)}</script>来对不同的数据进行分类。</p>
-<p><img src="/posts/89451192/代价函数2.png" alt="代价函数2"></p>
-<p>神经网络的代价函数如下：  </p>
-<script type="math/tex; mode=display">
-J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}\sum _{k=1}^{k} y^{(i)}_{k}log(h_{\theta}(x^{(i)})_k)+(1-y^{(i)}_k)log(1-h_{\theta}(x^{(i)})_k)]+\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\theta_{ji}^{(l)})^2</script><p>其中<script type="math/tex">(h_{\theta}(x))_i=i^{th} output</script> 表示第i个输出函数，因为在神经网络中有多个输入项，所以有多个代价函数，在这个式子中代价函数数为k,即k个输出函数(项),所以第一项为上式所 示,故有第 一项为  </p>
-<script type="math/tex; mode=display">
-J(\theta)=-\frac{1}{m}[\sum_{i=1}^{m}\sum _{k=1}^{k} y^{(i)}_{k}log(h_{\theta}(x^{(i)})_k)+(1-y^{(i)}_k)log(1-h_{\theta}(x^{(i)})_k)]</script><p>在第二项中， 示有L层，而因为 由上一层与连接下一层而形成的，所以个数也为两层的乘积，而后有从1到L-1，故有第二项为  </p>
-<script type="math/tex; mode=display">
-\frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_l+1}(\theta_{ji}^{(l)})^2</script><h3 id="反向传播过程"><a href="#反向传播过程" class="headerlink" title="反向传播过程"></a>反向传播过程</h3><p>反向传播可以计算出在神经网络中各个节点的导数，我们再通过梯度下降算法来进行目标函数的最小化。</p>
-<p><img src="/posts/89451192/反向传播1.png" alt="反向传播1"></p>
-<p>在上图中我们的最终目的是寻找最小化 <script type="math/tex">J(\theta)</script></p>
-<p><img src="/posts/89451192/反向传播2.png" alt="反向传播2"></p>
-<p>反射传播从直观上来说就是计算每一层的每个节点的误差，在上图中就是计算第三层的各个节点的误差，而后计算第二层的各个节点的误差，最后计算第一层的各个节点的误差，其中</p>
-<script type="math/tex; mode=display">
-\frac{\partial}{\partial \theta^{(l)}_{ij}}J(\theta)=a_j^{(l)}\delta_i^{(l+1)}</script><p>我们有梯度下降的正向传播过程以及涉及的参数如下  </p>
-<p><img src="/posts/89451192/反向传播3.png" alt="反向传播3"></p>
-<p>梯度下降算法中的反射传播算法过程如下  </p>
-<p><img src="/posts/89451192/反向传播4.png" alt="反向传播4"></p>
-<p>其中反向传播算法如下：</p>
-<p><img src="/posts/89451192/反向传播5.png" alt="反向传播5"></p>
-<p>其中符号<script type="math/tex">\Delta</script>，其中l表示神经网络的层数，i表示样本数，j表示神经网络中某层的第几个节点</p>
-<p>算法步骤解释如下：</p>
-<p>一、设置所有符号<script type="math/tex">\Delta_{ij}^{(l)}</script>均为0.</p>
-<p>二、设置从样本1到m的循环，即遍历所有样本.</p>
-<p>三、在循环中设置输入参数为<script type="math/tex">a^{(1)}</script>.</p>
-<p>四、执行正向传播算法，求得各层的<script type="math/tex">a^{(l)}</script>.</p>
-<p>五、使用结果<script type="math/tex">y^{(i)}</script>来计算输出层的差值<script type="math/tex">\delta^{(l)}</script>.</p>
-<p>六、计算隐藏层的差值<script type="math/tex">\delta^{(l-1)},\delta^{(l-2)}...</script></p>
-<p>七、计算每个样本的各层的各个节点的<script type="math/tex">\Delta_{ij}^{(l)}</script>,其中式子</p>
-<script type="math/tex; mode=display">
-\Delta_{ij}^{(l)}=\Delta_{ij}^{(l)}+a_{j}^{(l)}\delta_i^{(l+1)}</script><p>当<script type="math/tex">J(\theta)</script>的m为1，且无正则项时，</p>
-<script type="math/tex; mode=display">
-\frac {\partial}{\partial \theta_{ij}^{(l)}}J(\theta)=a_j^{(l)}\delta_i^{(l+1)}</script><p>八、 我们计算各样本各层节点的<script type="math/tex">D_{ij}^{(l)}</script>，<script type="math/tex">\frac{\partial}{\partial \theta_{ij}^{(l)}}=D_{ij}^{(l)}</script>，此处的函数<script type="math/tex">J(\theta)</script>m不等于1且有正则项的分两种情况，当</p>
-<script type="math/tex; mode=display">
-D_{ij}^{(l)}=\frac{1}{m}\Delta_{ij}^{(l)}+\lambda \theta_{ij}^{(l)} \:\:\: if\:\: j\neq0(非偏置项) \\
-D_{ij}^{(l)}=\frac{1}{m}\Delta_{ij}^{(l)}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\:\: j\neq0(偏置项)</script><p>为什么此时是<script type="math/tex">\lambda \theta_{ij}^{(l)}</script>不是<script type="math/tex">\frac{\lambda }{m}\theta_{ij}^{(l)}</script>暂时不清楚</p>
-<h3 id="反向传播算法的理解与推导"><a href="#反向传播算法的理解与推导" class="headerlink" title="反向传播算法的理解与推导"></a>反向传播算法的理解与推导</h3><p><img src="/posts/89451192/image-20220619151637481-16556230021951.png" alt="image-20220619151637481"></p>
-]]></content>
-      <categories>
-        <category>计算机</category>
-        <category>机器学习</category>
-      </categories>
-      <tags>
-        <tag>深度学习</tag>
-        <tag>机器学习</tag>
-        <tag>吴恩达</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>基于CNN的代码查重模型</title>
     <url>/posts/8ed5f4b9/</url>
     <content><![CDATA[<p>本文为基于CNN的代码查重模型所涉及的知识点的总结。该论文主是通过利用卷积神经网络来进行模型的构建，经过一定数量的数据训练使得模型在进行代码查重具有一定的准确性。该流程主要分成三个部分，一、代码文本预处理，二、数据输入进模型并得到向量，三、文本的相似度计算。</p>
@@ -1833,6 +1833,174 @@ L=max (0,cos(源代码,负例)-cos(源代码,正例)+1W)</script><p>通过上述
         <tag>深度学习</tag>
         <tag>MXNet</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据库三大范式</title>
+    <url>/posts/82be6141/</url>
+    <content><![CDATA[<p>本文为数据库三大范式的笔记整理。</p>
+<span id="more"></span>
+<h1 id="数据库-基本概念整理-三大范式"><a href="#数据库-基本概念整理-三大范式" class="headerlink" title="数据库-基本概念整理-三大范式"></a>数据库-基本概念整理-三大范式</h1><h2 id="候选码"><a href="#候选码" class="headerlink" title="候选码"></a>候选码</h2><p>候选码：若关系中的某一属性的值能唯一地标识一个元组，而其子集不能，则称该属性组为候选码，若一个关系中有多个候选码，则选定其中一个为主码。</p>
+<h2 id="主属性"><a href="#主属性" class="headerlink" title="主属性"></a>主属性</h2><p>主属性：一个属性只要在任何一个候选码中出现过，这个属性就是主属性。</p>
+<h2 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h2><p>定义：表示属于第一范式的所有属性不可再分，即数据项不可再分。</p>
+<h2 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h2><p>定义：若某关系R属于第一范式，且每一个非主属性完全函数完全依赖于任何一个候选码，则关系R属于第二范式。</p>
+<h3 id="部分函数依赖"><a href="#部分函数依赖" class="headerlink" title="部分函数依赖"></a>部分函数依赖</h3><p>部分函数依赖是指多个属性决定另一个属性，但事实上，这多个属性是有冗余的。例如，(学号，班级)-&gt;姓名，事实上只需要学号就能决定姓名，因此班级是冗余的。</p>
+<h3 id="完全函数依赖"><a href="#完全函数依赖" class="headerlink" title="完全函数依赖"></a>完全函数依赖</h3><p>完全函数依赖是消除了部分函数依赖，关系中的非主属性完全能主属性或者组合属性推导而出。如有选课关系表(学号，课程号，成绩，学分)，其中关键字为组合关键字(学号，课程号)，由于非主属性学分仅依赖于课程号，对关系字(学号，课程号)只是部分依赖，而不是完全依赖，因些这种方式会导致数据冗余以及更新异常等问题，解决办法是将其分为两个关键模式：学生表(学号，课程号，分数)和课程表(课程号，学分)，新关系通过学生表中的外关键字课程号联系，在需要时进行连接。</p>
+<p>我们有选课关系表(学号，课程号，成绩，学分)，我们对其进行学分修改时，我们需要找到所有选过这个课程号的学生，并对其进行学分的修改，这样会导致数据冗余，而若我们拆分学生表与课程表就不会发生这种情况，而若我们需要删除该课程时，也会导致此类情况。</p>
+<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><p>判断一个关系是否属于第二范式：</p>
+<p>1、找出数据表中的所有码；</p>
+<p>2、找出所有主属性和非主属性；</p>
+<p>3、判断所有非主属性对码的部分函数依赖；</p>
+<h2 id="第三范式"><a href="#第三范式" class="headerlink" title="第三范式"></a>第三范式</h2><p>定义：第三范式是在第二范式的基础上消除了传递依赖，即非主属性既不传递依赖于码，也不部分依赖于码。</p>
+<p>若我们有表学生上课表 (姓名，课程，老师，老师职称，教室，上课时间)，这个表上具有传递依赖。即</p>
+<p>(姓名，课程)-&gt;老师-&gt;老师职称</p>
+<p>该表具有如下问题</p>
+<p>1、若老师改变了职称，则需要修改数据库，若有N条记录，都需要修改N条(修改异常)</p>
+<p>2、若没人选这个老师的课，那么老师的职称也没了记录(删除异常)</p>
+<p>3、若新来一个老师，暂时还未分配教授课程，那么没有表记录他的职称(插入异常)</p>
+<p>我们需要对于学生上课表进行分解，有</p>
+<p>(姓名，课程，老师，教室，上课时间)</p>
+<p>(老师，老师职称)</p>
+<h2 id="BC范式-BCNF"><a href="#BC范式-BCNF" class="headerlink" title="BC范式(BCNF)"></a>BC范式(BCNF)</h2><p>BC范式符合3NF，并且主属性不依赖于主属性。</p>
+<p>BC范式既检查非主属性，又检查主属性。当只检查非主属性时，就成了第三范式。满足BC范式的关系都必然满足第三范式。还可以这么说：若一个关系达到了第三范式，并且它只有一个候选码，或者它的每个候选码都是单属性，则该关系自然达到BC范式。</p>
+<p>假设仓库管理关系表(仓库ID，存储物品ID，管理员ID，数量)，且只有一个管理员只在一个仓库工作，一个仓库可以存储多种物品。</p>
+<p>这个数据库表存在如下决定关系：</p>
+<p>(仓库ID，存储物品ID)-&gt;(管理员ID，数量)</p>
+<p>(管理员ID，存储物品ID)-&gt;(仓库ID，数量)</p>
+<p>所以，(仓库ID, 存储物品ID)和(管理员ID, 存储物品ID)都是StorehouseManage的候选关键字，表中的唯一非关键字段为数量，它是符合第三范式的。但是，由于存在如下决定关系：</p>
+<p>(仓库ID) → (管理员ID)</p>
+<p>(管理员ID) → (仓库ID)</p>
+<p>这种关键字决定关键字段的情况，其不符合BCNF范式。</p>
+<p>以上关系表会存在如下问题</p>
+<p>1、删除异常</p>
+<p>当仓库被清空后，所有”存储物品ID”和”数量”信息被删除的同时，”仓库ID“与”管理ID“也被删除了。</p>
+<p>2、插入异常</p>
+<p>当仓库没有存储任何物品时，无法给仓库分配管理员。</p>
+<p>3、更新异常</p>
+<p>如果仓库更换了管理员，则表中所有行的管理员ID都要修改。</p>
+<p>所以需要把上述关系分解为</p>
+<p>仓库管理：(仓库ID，管理员ID)</p>
+<p>仓库：(仓库ID，存储物品ID，数量)</p>
+<p>这样的数据库表符合BCNF范式，消除了删除异常，插入异常与更新异常</p>
+<p>参考链接：<a href="https://www.cnblogs.com/lca1826/p/6601395.html">https://www.cnblogs.com/lca1826/p/6601395.html</a></p>
+]]></content>
+      <categories>
+        <category>计算机</category>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>数据库基础知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>高性能mysql</title>
+    <url>/posts/5b906d18/</url>
+    <content><![CDATA[<p> 本文为高性能mysql知识点整理。</p>
+<span id="more"></span>
+<h1 id="mysql架构与历史"><a href="#mysql架构与历史" class="headerlink" title="mysql架构与历史"></a>mysql架构与历史</h1><h2 id="mysql逻辑架构"><a href="#mysql逻辑架构" class="headerlink" title="mysql逻辑架构"></a>mysql逻辑架构</h2><p>mysql逻辑架构，如下图所示。</p>
+<p><img src="/posts/5b906d18/image-20220330165956330.png" alt="image-20220330165956330"></p>
+<p>最上层为连接处理、授权认证、安全等。</p>
+<p>第二层架构包括查询解析、分析、优化、缓存以及所有内置函数、存储过程、视图、触发器等。</p>
+<p>第三层为存储引擎，存储引擎负责MYSQL中数据的存储与提取。</p>
+<h3 id="连接管理与安全性"><a href="#连接管理与安全性" class="headerlink" title="连接管理与安全性"></a>连接管理与安全性</h3><p>每个客户端连接都在服务器进程中拥有一个线程，这个连接的查询中会在这个单独的线程中执行，该线程只能轮流在某个CPU核心或者CPU中运行，服务器会缓存线程，因此不需要为每一个新建的连接创建或销毁线程，</p>
+<p><strong>注：</strong>与用户级线程类似</p>
+<p>当客户端连接到MySQL服务器时，服务器需要对其进行认证，认证基于用户名密码等。</p>
+<h3 id="优化与执行"><a href="#优化与执行" class="headerlink" title="优化与执行"></a>优化与执行</h3><p>mysql会解析查询，并创建内部数据结构(解析树)，然后对其进行各种优化，包括重写查询、决定表的读取顺序，以及选择合适的索引等。</p>
+<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>当我们出现一个线程要删除A表，另一个线程要读取A表，如若不进行并发控制，会出现结果不确定性。</p>
+<p>为了解决这种问题，我们有<strong>共享锁</strong>与<strong>排它锁</strong>，也叫<strong>读锁</strong>与<strong>写锁</strong>。</p>
+<ol>
+<li>读锁：读锁是共享的，即相互不阻塞。多个客户在同一时刻可以同时读取同一资源，而不互相干扰。</li>
+<li>写锁：写锁是排他的，即一个写锁会阻塞其它的写锁与读锁。</li>
+</ol>
+<h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><p>锁粒度即锁住数据的颗粒度，如锁表，锁行等。锁定数据的级别不一样。</p>
+<p><strong>表锁</strong>：会锁定整张表，一个用户在表进行写操作(插入、删除、修改等)前，需要先获得写锁，这会阻塞其他用户对该表的所有读写操作。只有在没有写锁时，其他读取的用户才获得读锁，读锁之间是不相互阻塞的。</p>
+<p><strong>行级锁</strong>：可以最大程度地支持并发处理(同时也带来锁开销)，其特性与表锁一致。</p>
+<p><strong>注</strong>：实现表锁与行级锁的必要条件是操作是原子级别的，即不可分割。</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">start transaction;</span><br><span class="line">select balance <span class="keyword">from</span> checking where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update checking <span class="built_in">set</span> <span class="attribute">balance</span>=balance-200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update savings <span class="built_in">set</span> <span class="attribute">balance</span>=balance+200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
+<p>若语句在执行到第四个语句崩溃了，用户可能会损失200元。</p>
+<p>所以我们需要系统通过ACID测试，ACID具有</p>
+<ol>
+<li>原子性</li>
+<li>一致性</li>
+<li>隔离性</li>
+<li>持久性</li>
+</ol>
+<p><strong>原子性</strong>：一个事务必须被视为一个不可分割的最小单元，整个事务要么全部提交成功，要么全部失败回滚，对于一事务来说，不可能只执行其中的一部分操作，就是事务的原子性。</p>
+<p><strong>一致性</strong>：数据库总是从一个一致性的状态转换到另外一个一致性的状态。在前面的例子中，一致性确保了，即使在执行第三、第四条语句之间时系统崩溃，支票账户也不会损失200美元，因为事务最终没有提交，所有事务中所做的修改也不会保存到数据库中。</p>
+<p><strong>隔离性</strong>：一个事务所做的修改在最终提交以前，对其他事务不可见的。在前面的例子中，当执行完第三条语句、第四要语句还未开始时，此时有另一个账户汇总程序开始运行，则其看到的支票账户的余额并没有被减去200美元。</p>
+<p><strong>持久性</strong>：一旦事务提交，则其所做的修改应付永久保存到数据库中。此时即使系统崩溃，修改的数据也不会丢失。</p>
+<p>我们将采用一个由几个账户和一个访问和更新账户的事务集合构成的简单的银行应用来阐明事务的概念。事务运用以下两个操作访问数据。</p>
+<p>read(X)：从数据库把数据项X传送到执行read操作的事务的主存缓冲区的一个也称为X的变量中。</p>
+<p>write(X)：从执行write的事务的主存缓冲区的变量X中把数据项X传回数据库中。write操作不一定立即更新磁盘上的数据；write操作的结果可以临时存储在某处，以后再写到磁盘上。目前假设write操作立即更新数据库。</p>
+<p>设$T_i$是从账户A过户$50到账户B的事务。这个事务的代码有：</p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="built_in">read</span>(X);</span><br><span class="line"><span class="selector-tag">A</span>:=A-<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(A);</span><br><span class="line"><span class="built_in">read</span>(B);</span><br><span class="line"><span class="selector-tag">B</span>:=B+<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(B);</span><br></pre></td></tr></table></figure>
+<p>在这个例子中</p>
+<p>一致性：一致性要求事务的执行不改变A、B之和。如果没有一致性要求，金额可以能被事务凭空创造或销毁，如果数据库在事务执行前是一致的，那么事务执行数据库仍将保持一致。</p>
+<p>总而言之，一致性即在事务执行前与执行后数据的一致与逻辑的自洽。</p>
+<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>SQL标准定义了四个隔离级别，每一种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见的，哪些是不可见的。</p>
+<p>四种隔离级别。</p>
+<p><strong>READ UNCOMMITTED(未提交读)</strong></p>
+<p>​    在READ UNCOMMITTED级别，事务中的修改，即使没有提交，对其它事务也都是可见的。事务可以读取未提交的数据，这称之为<strong>脏读</strong>。</p>
+<p><strong>READ COMMITTED(提交读)</strong></p>
+<p>​    READ COMMITTED满足前面的隔离性的简单定义：一个事务开始时，只能”看见”已经提交的事务所做的修改。即一个事务从开始直到提交之前，所做的任何修改对其他事务都是不可见的。这个级别也叫做<strong>不可重复读</strong>，因为两次执行同样的查询，可能会得到不一样的结果。</p>
+<p><strong>REPEATABLE READ(可重复读)</strong></p>
+<p>​    REPEATABLE READ解决了脏读的问题。该级别保证了在同一事务中多次读取同样记录的结果是一致的。但是可重复读隔离级别无法解决另一个<strong>幻读</strong>问题。幻读是指当某个事务在读取某个范围内的记录时，另一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围的记录时，会产生<strong>幻行</strong>。</p>
+<p><strong>可重复读是MYSQL的默认事务隔离级别</strong>。</p>
+<p><strong>SERIALIZABLE(可串行化)</strong></p>
+<p>​    SERIALIZABLE是最高的隔离级别，通过强制事务串行执行，避免了前面的幻读问题。即SERIALIZABLE会在读取的每一行数据上都加锁，所以可能会导致大量的超时与锁争用问题。实际应用中很少用到这个隔离级别，只有在非常需要确保数据的一致性而且可以接受没有并发的情况下，才考虑采用该级别。</p>
+<center>ANSI SQL隔离级别</center>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:left">隔离级别</th>
+<th>脏读可能性</th>
+<th>不可重复读可能性</th>
+<th>幻读可能性</th>
+<th>加锁读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">READ UNCOMMITTED</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td style="text-align:left">READ COMMITTED</td>
+<td>no</td>
+<td>yes</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td style="text-align:left">REPEATABLE READ</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td style="text-align:left">SERIALIZABLE</td>
+<td>no</td>
+<td>no</td>
+<td>no</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+]]></content>
+      <categories>
+        <category>计算机</category>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>高性能mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -2363,174 +2531,6 @@ $$H_{t-1}$$为上一层的隐藏状态，所以这表示该层的隐藏状态与
         <tag>深度学习</tag>
         <tag>MXNet</tag>
         <tag>动手学深度学习</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>高性能mysql</title>
-    <url>/posts/5b906d18/</url>
-    <content><![CDATA[<p> 本文为高性能mysql知识点整理。</p>
-<span id="more"></span>
-<h1 id="mysql架构与历史"><a href="#mysql架构与历史" class="headerlink" title="mysql架构与历史"></a>mysql架构与历史</h1><h2 id="mysql逻辑架构"><a href="#mysql逻辑架构" class="headerlink" title="mysql逻辑架构"></a>mysql逻辑架构</h2><p>mysql逻辑架构，如下图所示。</p>
-<p><img src="/posts/5b906d18/image-20220330165956330.png" alt="image-20220330165956330"></p>
-<p>最上层为连接处理、授权认证、安全等。</p>
-<p>第二层架构包括查询解析、分析、优化、缓存以及所有内置函数、存储过程、视图、触发器等。</p>
-<p>第三层为存储引擎，存储引擎负责MYSQL中数据的存储与提取。</p>
-<h3 id="连接管理与安全性"><a href="#连接管理与安全性" class="headerlink" title="连接管理与安全性"></a>连接管理与安全性</h3><p>每个客户端连接都在服务器进程中拥有一个线程，这个连接的查询中会在这个单独的线程中执行，该线程只能轮流在某个CPU核心或者CPU中运行，服务器会缓存线程，因此不需要为每一个新建的连接创建或销毁线程，</p>
-<p><strong>注：</strong>与用户级线程类似</p>
-<p>当客户端连接到MySQL服务器时，服务器需要对其进行认证，认证基于用户名密码等。</p>
-<h3 id="优化与执行"><a href="#优化与执行" class="headerlink" title="优化与执行"></a>优化与执行</h3><p>mysql会解析查询，并创建内部数据结构(解析树)，然后对其进行各种优化，包括重写查询、决定表的读取顺序，以及选择合适的索引等。</p>
-<h2 id="并发控制"><a href="#并发控制" class="headerlink" title="并发控制"></a>并发控制</h2><h3 id="读写锁"><a href="#读写锁" class="headerlink" title="读写锁"></a>读写锁</h3><p>当我们出现一个线程要删除A表，另一个线程要读取A表，如若不进行并发控制，会出现结果不确定性。</p>
-<p>为了解决这种问题，我们有<strong>共享锁</strong>与<strong>排它锁</strong>，也叫<strong>读锁</strong>与<strong>写锁</strong>。</p>
-<ol>
-<li>读锁：读锁是共享的，即相互不阻塞。多个客户在同一时刻可以同时读取同一资源，而不互相干扰。</li>
-<li>写锁：写锁是排他的，即一个写锁会阻塞其它的写锁与读锁。</li>
-</ol>
-<h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><p>锁粒度即锁住数据的颗粒度，如锁表，锁行等。锁定数据的级别不一样。</p>
-<p><strong>表锁</strong>：会锁定整张表，一个用户在表进行写操作(插入、删除、修改等)前，需要先获得写锁，这会阻塞其他用户对该表的所有读写操作。只有在没有写锁时，其他读取的用户才获得读锁，读锁之间是不相互阻塞的。</p>
-<p><strong>行级锁</strong>：可以最大程度地支持并发处理(同时也带来锁开销)，其特性与表锁一致。</p>
-<p><strong>注</strong>：实现表锁与行级锁的必要条件是操作是原子级别的，即不可分割。</p>
-<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">start transaction;</span><br><span class="line">select balance <span class="keyword">from</span> checking where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update checking <span class="built_in">set</span> <span class="attribute">balance</span>=balance-200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">update savings <span class="built_in">set</span> <span class="attribute">balance</span>=balance+200 where <span class="attribute">customer_id</span>=10233276;</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
-<p>若语句在执行到第四个语句崩溃了，用户可能会损失200元。</p>
-<p>所以我们需要系统通过ACID测试，ACID具有</p>
-<ol>
-<li>原子性</li>
-<li>一致性</li>
-<li>隔离性</li>
-<li>持久性</li>
-</ol>
-<p><strong>原子性</strong>：一个事务必须被视为一个不可分割的最小单元，整个事务要么全部提交成功，要么全部失败回滚，对于一事务来说，不可能只执行其中的一部分操作，就是事务的原子性。</p>
-<p><strong>一致性</strong>：数据库总是从一个一致性的状态转换到另外一个一致性的状态。在前面的例子中，一致性确保了，即使在执行第三、第四条语句之间时系统崩溃，支票账户也不会损失200美元，因为事务最终没有提交，所有事务中所做的修改也不会保存到数据库中。</p>
-<p><strong>隔离性</strong>：一个事务所做的修改在最终提交以前，对其他事务不可见的。在前面的例子中，当执行完第三条语句、第四要语句还未开始时，此时有另一个账户汇总程序开始运行，则其看到的支票账户的余额并没有被减去200美元。</p>
-<p><strong>持久性</strong>：一旦事务提交，则其所做的修改应付永久保存到数据库中。此时即使系统崩溃，修改的数据也不会丢失。</p>
-<p>我们将采用一个由几个账户和一个访问和更新账户的事务集合构成的简单的银行应用来阐明事务的概念。事务运用以下两个操作访问数据。</p>
-<p>read(X)：从数据库把数据项X传送到执行read操作的事务的主存缓冲区的一个也称为X的变量中。</p>
-<p>write(X)：从执行write的事务的主存缓冲区的变量X中把数据项X传回数据库中。write操作不一定立即更新磁盘上的数据；write操作的结果可以临时存储在某处，以后再写到磁盘上。目前假设write操作立即更新数据库。</p>
-<p>设$T_i$是从账户A过户$50到账户B的事务。这个事务的代码有：</p>
-<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="built_in">read</span>(X);</span><br><span class="line"><span class="selector-tag">A</span>:=A-<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(A);</span><br><span class="line"><span class="built_in">read</span>(B);</span><br><span class="line"><span class="selector-tag">B</span>:=B+<span class="number">50</span>;</span><br><span class="line"><span class="built_in">write</span>(B);</span><br></pre></td></tr></table></figure>
-<p>在这个例子中</p>
-<p>一致性：一致性要求事务的执行不改变A、B之和。如果没有一致性要求，金额可以能被事务凭空创造或销毁，如果数据库在事务执行前是一致的，那么事务执行数据库仍将保持一致。</p>
-<p>总而言之，一致性即在事务执行前与执行后数据的一致与逻辑的自洽。</p>
-<h3 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h3><p>SQL标准定义了四个隔离级别，每一种级别都规定了一个事务中所做的修改，哪些在事务内和事务间是可见的，哪些是不可见的。</p>
-<p>四种隔离级别。</p>
-<p><strong>READ UNCOMMITTED(未提交读)</strong></p>
-<p>​    在READ UNCOMMITTED级别，事务中的修改，即使没有提交，对其它事务也都是可见的。事务可以读取未提交的数据，这称之为<strong>脏读</strong>。</p>
-<p><strong>READ COMMITTED(提交读)</strong></p>
-<p>​    READ COMMITTED满足前面的隔离性的简单定义：一个事务开始时，只能”看见”已经提交的事务所做的修改。即一个事务从开始直到提交之前，所做的任何修改对其他事务都是不可见的。这个级别也叫做<strong>不可重复读</strong>，因为两次执行同样的查询，可能会得到不一样的结果。</p>
-<p><strong>REPEATABLE READ(可重复读)</strong></p>
-<p>​    REPEATABLE READ解决了脏读的问题。该级别保证了在同一事务中多次读取同样记录的结果是一致的。但是可重复读隔离级别无法解决另一个<strong>幻读</strong>问题。幻读是指当某个事务在读取某个范围内的记录时，另一个事务又在该范围内插入了新的记录，当之前的事务再次读取该范围的记录时，会产生<strong>幻行</strong>。</p>
-<p><strong>可重复读是MYSQL的默认事务隔离级别</strong>。</p>
-<p><strong>SERIALIZABLE(可串行化)</strong></p>
-<p>​    SERIALIZABLE是最高的隔离级别，通过强制事务串行执行，避免了前面的幻读问题。即SERIALIZABLE会在读取的每一行数据上都加锁，所以可能会导致大量的超时与锁争用问题。实际应用中很少用到这个隔离级别，只有在非常需要确保数据的一致性而且可以接受没有并发的情况下，才考虑采用该级别。</p>
-<center>ANSI SQL隔离级别</center>
-
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:left">隔离级别</th>
-<th>脏读可能性</th>
-<th>不可重复读可能性</th>
-<th>幻读可能性</th>
-<th>加锁读</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">READ UNCOMMITTED</td>
-<td>yes</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td style="text-align:left">READ COMMITTED</td>
-<td>no</td>
-<td>yes</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td style="text-align:left">REPEATABLE READ</td>
-<td>no</td>
-<td>no</td>
-<td>yes</td>
-<td>no</td>
-</tr>
-<tr>
-<td style="text-align:left">SERIALIZABLE</td>
-<td>no</td>
-<td>no</td>
-<td>no</td>
-<td>yes</td>
-</tr>
-</tbody>
-</table>
-</div>
-]]></content>
-      <categories>
-        <category>计算机</category>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>mysql</tag>
-        <tag>高性能mysql</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>数据库三大范式</title>
-    <url>/posts/82be6141/</url>
-    <content><![CDATA[<p>本文为数据库三大范式的笔记整理。</p>
-<span id="more"></span>
-<h1 id="数据库-基本概念整理-三大范式"><a href="#数据库-基本概念整理-三大范式" class="headerlink" title="数据库-基本概念整理-三大范式"></a>数据库-基本概念整理-三大范式</h1><h2 id="候选码"><a href="#候选码" class="headerlink" title="候选码"></a>候选码</h2><p>候选码：若关系中的某一属性的值能唯一地标识一个元组，而其子集不能，则称该属性组为候选码，若一个关系中有多个候选码，则选定其中一个为主码。</p>
-<h2 id="主属性"><a href="#主属性" class="headerlink" title="主属性"></a>主属性</h2><p>主属性：一个属性只要在任何一个候选码中出现过，这个属性就是主属性。</p>
-<h2 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h2><p>定义：表示属于第一范式的所有属性不可再分，即数据项不可再分。</p>
-<h2 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h2><p>定义：若某关系R属于第一范式，且每一个非主属性完全函数完全依赖于任何一个候选码，则关系R属于第二范式。</p>
-<h3 id="部分函数依赖"><a href="#部分函数依赖" class="headerlink" title="部分函数依赖"></a>部分函数依赖</h3><p>部分函数依赖是指多个属性决定另一个属性，但事实上，这多个属性是有冗余的。例如，(学号，班级)-&gt;姓名，事实上只需要学号就能决定姓名，因此班级是冗余的。</p>
-<h3 id="完全函数依赖"><a href="#完全函数依赖" class="headerlink" title="完全函数依赖"></a>完全函数依赖</h3><p>完全函数依赖是消除了部分函数依赖，关系中的非主属性完全能主属性或者组合属性推导而出。如有选课关系表(学号，课程号，成绩，学分)，其中关键字为组合关键字(学号，课程号)，由于非主属性学分仅依赖于课程号，对关系字(学号，课程号)只是部分依赖，而不是完全依赖，因些这种方式会导致数据冗余以及更新异常等问题，解决办法是将其分为两个关键模式：学生表(学号，课程号，分数)和课程表(课程号，学分)，新关系通过学生表中的外关键字课程号联系，在需要时进行连接。</p>
-<p>我们有选课关系表(学号，课程号，成绩，学分)，我们对其进行学分修改时，我们需要找到所有选过这个课程号的学生，并对其进行学分的修改，这样会导致数据冗余，而若我们拆分学生表与课程表就不会发生这种情况，而若我们需要删除该课程时，也会导致此类情况。</p>
-<h3 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h3><p>判断一个关系是否属于第二范式：</p>
-<p>1、找出数据表中的所有码；</p>
-<p>2、找出所有主属性和非主属性；</p>
-<p>3、判断所有非主属性对码的部分函数依赖；</p>
-<h2 id="第三范式"><a href="#第三范式" class="headerlink" title="第三范式"></a>第三范式</h2><p>定义：第三范式是在第二范式的基础上消除了传递依赖，即非主属性既不传递依赖于码，也不部分依赖于码。</p>
-<p>若我们有表学生上课表 (姓名，课程，老师，老师职称，教室，上课时间)，这个表上具有传递依赖。即</p>
-<p>(姓名，课程)-&gt;老师-&gt;老师职称</p>
-<p>该表具有如下问题</p>
-<p>1、若老师改变了职称，则需要修改数据库，若有N条记录，都需要修改N条(修改异常)</p>
-<p>2、若没人选这个老师的课，那么老师的职称也没了记录(删除异常)</p>
-<p>3、若新来一个老师，暂时还未分配教授课程，那么没有表记录他的职称(插入异常)</p>
-<p>我们需要对于学生上课表进行分解，有</p>
-<p>(姓名，课程，老师，教室，上课时间)</p>
-<p>(老师，老师职称)</p>
-<h2 id="BC范式-BCNF"><a href="#BC范式-BCNF" class="headerlink" title="BC范式(BCNF)"></a>BC范式(BCNF)</h2><p>BC范式符合3NF，并且主属性不依赖于主属性。</p>
-<p>BC范式既检查非主属性，又检查主属性。当只检查非主属性时，就成了第三范式。满足BC范式的关系都必然满足第三范式。还可以这么说：若一个关系达到了第三范式，并且它只有一个候选码，或者它的每个候选码都是单属性，则该关系自然达到BC范式。</p>
-<p>假设仓库管理关系表(仓库ID，存储物品ID，管理员ID，数量)，且只有一个管理员只在一个仓库工作，一个仓库可以存储多种物品。</p>
-<p>这个数据库表存在如下决定关系：</p>
-<p>(仓库ID，存储物品ID)-&gt;(管理员ID，数量)</p>
-<p>(管理员ID，存储物品ID)-&gt;(仓库ID，数量)</p>
-<p>所以，(仓库ID, 存储物品ID)和(管理员ID, 存储物品ID)都是StorehouseManage的候选关键字，表中的唯一非关键字段为数量，它是符合第三范式的。但是，由于存在如下决定关系：</p>
-<p>(仓库ID) → (管理员ID)</p>
-<p>(管理员ID) → (仓库ID)</p>
-<p>这种关键字决定关键字段的情况，其不符合BCNF范式。</p>
-<p>以上关系表会存在如下问题</p>
-<p>1、删除异常</p>
-<p>当仓库被清空后，所有”存储物品ID”和”数量”信息被删除的同时，”仓库ID“与”管理ID“也被删除了。</p>
-<p>2、插入异常</p>
-<p>当仓库没有存储任何物品时，无法给仓库分配管理员。</p>
-<p>3、更新异常</p>
-<p>如果仓库更换了管理员，则表中所有行的管理员ID都要修改。</p>
-<p>所以需要把上述关系分解为</p>
-<p>仓库管理：(仓库ID，管理员ID)</p>
-<p>仓库：(仓库ID，存储物品ID，数量)</p>
-<p>这样的数据库表符合BCNF范式，消除了删除异常，插入异常与更新异常</p>
-<p>参考链接：<a href="https://www.cnblogs.com/lca1826/p/6601395.html">https://www.cnblogs.com/lca1826/p/6601395.html</a></p>
-]]></content>
-      <categories>
-        <category>计算机</category>
-        <category>数据库</category>
-      </categories>
-      <tags>
-        <tag>数据库基础知识</tag>
       </tags>
   </entry>
 </search>
