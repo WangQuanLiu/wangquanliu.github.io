@@ -11,8 +11,8 @@
         <category>计算机</category>
       </categories>
       <tags>
-        <tag>吴恩达</tag>
         <tag>深度学习</tag>
+        <tag>吴恩达</tag>
       </tags>
   </entry>
   <entry>
@@ -555,8 +555,8 @@ $$H_{t-1}$$为上一层的隐藏状态，所以这表示该层的隐藏状态与
         <category>深度学习</category>
       </categories>
       <tags>
-        <tag>深度学习</tag>
         <tag>动手学深度学习</tag>
+        <tag>深度学习</tag>
         <tag>MXNet</tag>
       </tags>
   </entry>
@@ -1051,9 +1051,9 @@ D_{ij}^{(l)}=\frac{1}{m}\Delta_{ij}^{(l)}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ if\:\: 
         <category>机器学习</category>
       </categories>
       <tags>
+        <tag>深度学习</tag>
         <tag>机器学习</tag>
         <tag>吴恩达</tag>
-        <tag>深度学习</tag>
       </tags>
   </entry>
   <entry>
