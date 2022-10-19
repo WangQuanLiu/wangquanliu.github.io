@@ -11,9 +11,9 @@
   </url>
   
   <url>
-    <loc>http://wangquanliu.com/posts/800d7d1c/</loc>
+    <loc>http://wangquanliu.com/posts/ae4a2f5f/</loc>
     
-    <lastmod>2022-10-17</lastmod>
+    <lastmod>2022-10-19</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -22,16 +22,16 @@
   <url>
     <loc>http://wangquanliu.com/posts/427acf3b/</loc>
     
-    <lastmod>2022-10-13</lastmod>
+    <lastmod>2022-10-19</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://wangquanliu.com/posts/ae4a2f5f/</loc>
+    <loc>http://wangquanliu.com/posts/800d7d1c/</loc>
     
-    <lastmod>2022-10-12</lastmod>
+    <lastmod>2022-10-17</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -182,13 +182,6 @@
 
   
   <url>
-    <loc>http://wangquanliu.com/tags/%E6%B1%A0%E7%A8%8B%E6%B1%A0/</loc>
-    <lastmod>2022-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>http://wangquanliu.com/tags/C/</loc>
     <lastmod>2022-10-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -196,21 +189,14 @@
   </url>
   
   <url>
+    <loc>http://wangquanliu.com/tags/%E6%B1%A0%E7%A8%8B%E6%B1%A0/</loc>
+    <lastmod>2022-10-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://wangquanliu.com/tags/QT/</loc>
-    <lastmod>2022-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://wangquanliu.com/tags/STL/</loc>
-    <lastmod>2022-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://wangquanliu.com/tags/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2022-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -231,6 +217,20 @@
   </url>
   
   <url>
+    <loc>http://wangquanliu.com/tags/STL/</loc>
+    <lastmod>2022-10-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://wangquanliu.com/tags/%E7%AE%97%E6%B3%95/</loc>
+    <lastmod>2022-10-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>http://wangquanliu.com/tags/mysql/</loc>
     <lastmod>2022-10-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -245,14 +245,7 @@
   </url>
   
   <url>
-    <loc>http://wangquanliu.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2022-10-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>http://wangquanliu.com/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/</loc>
+    <loc>http://wangquanliu.com/tags/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2022-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -266,14 +259,21 @@
   </url>
   
   <url>
-    <loc>http://wangquanliu.com/tags/%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/</loc>
+    <loc>http://wangquanliu.com/tags/MXNet/</loc>
     <lastmod>2022-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>http://wangquanliu.com/tags/MXNet/</loc>
+    <loc>http://wangquanliu.com/tags/%E5%90%B4%E6%81%A9%E8%BE%BE/</loc>
+    <lastmod>2022-10-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://wangquanliu.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2022-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
