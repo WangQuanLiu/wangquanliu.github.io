@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wangquanliu.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+
+  <meta name="description" content="类型推导条款1: 理解模板推导 T 被推导成 int ，ParamType 被推导成 const int&amp; 。   而当我们有代码  T 的类型不仅和 expr 的类型独立， 而且还和 ParamType 的形式独立。 下面是三个例子：    ParamType 是一个指针或者是一个引用类型， 但并不是一个通用的引用类型 。 ParamType 是一个通用的引用 。 ParamType 既">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective_Moderen_C">
+<meta property="og:url" content="http://wangquanliu.com/posts/427acf3b/index.html">
+<meta property="og:site_name" content="王权个人博客">
+<meta property="og:description" content="类型推导条款1: 理解模板推导 T 被推导成 int ，ParamType 被推导成 const int&amp; 。   而当我们有代码  T 的类型不仅和 expr 的类型独立， 而且还和 ParamType 的形式独立。 下面是三个例子：    ParamType 是一个指针或者是一个引用类型， 但并不是一个通用的引用类型 。 ParamType 是一个通用的引用 。 ParamType 既">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wangquanliu.com/posts/427acf3b/image-20221011183456507.png">
+<meta property="og:image" content="http://wangquanliu.com/posts/427acf3b/image-20221011183623641.png">
+<meta property="article:published_time" content="2022-10-11T10:30:21.000Z">
+<meta property="article:modified_time" content="2022-10-13T08:41:27.810Z">
+<meta property="article:author" content="刘王权">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wangquanliu.com/posts/427acf3b/image-20221011183456507.png">
+
+<link rel="canonical" href="http://wangquanliu.com/posts/427acf3b/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Effective_Moderen_C | 王权个人博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">王权个人博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签<span class="badge">17</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分类<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档<span class="badge">17</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://wangquanliu.com/posts/427acf3b/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="刘王权">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="王权个人博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Effective_Moderen_C
+        </h1>
+
+        <div class="post-meta">
+
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-10-11 18:30:21" itemprop="dateCreated datePublished" datetime="2022-10-11T18:30:21+08:00">2022-10-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-10-13 16:41:27" itemprop="dateModified" datetime="2022-10-13T16:41:27+08:00">2022-10-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">计算机</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>12 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="类型推导"><a href="#类型推导" class="headerlink" title="类型推导"></a>类型推导</h1><h2 id="条款1-理解模板推导"><a href="#条款1-理解模板推导" class="headerlink" title="条款1: 理解模板推导"></a>条款1: 理解模板推导</h2><p><img src="/posts/427acf3b/image-20221011183456507.png" alt="image-20221011183456507"></p>
+<p>T 被推导成 int ，ParamType 被推导成 const int&amp; 。  </p>
+<p>而当我们有代码</p>
+<p><img src="/posts/427acf3b/image-20221011183623641.png" alt="image-20221011183623641"></p>
+<p>T 的类型不仅和 expr 的类型独立， 而且还和 ParamType 的形式独立。 下面是三个例子：  </p>
+<ul>
+<li>ParamType 是一个指针或者是一个引用类型， 但并不是一个通用的引用类型 。</li>
+<li>ParamType 是一个通用的引用 。</li>
+<li>ParamType 既不是指针也不是引用  。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(ParamType param)</span></span>;</span><br><span class="line"><span class="built_in">f</span>(expr); <span class="comment">// 从expr推导出T和ParamType的类型</span></span><br></pre></td></tr></table></figure>
+<h3 id="ParamType-是个非通用的引用或者是一个指针。"><a href="#ParamType-是个非通用的引用或者是一个指针。" class="headerlink" title="ParamType 是个非通用的引用或者是一个指针。"></a>ParamType 是个非通用的引用或者是一个指针。</h3><p>当ParamType是一个引用类型或是一个指针，但是并非是一个通用的引用类型，则类型推导过程如下 ：</p>
+<p>1、<strong>如果expr的类型是个引用，则忽略引用部分。</strong></p>
+<p>2、然后利用expr的类型和ParamType对比判断T的类型。</p>
+<p>例如，我们有</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T&amp;param)</span></span>;<span class="comment">//param是个引用类型</span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> x=<span class="number">27</span>;<span class="comment">//x是一个int</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> cx=x; <span class="comment">//cx是一个const int</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> &amp;rx=x; <span class="comment">//rx是一个const int 的引用</span></span><br></pre></td></tr></table></figure>
+<p>则param和T在不同的调用下面的类型推导如下：</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(x); 		<span class="comment">// T是int， param的类型时int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx); 		<span class="comment">// T是const int，</span></span><br><span class="line">			<span class="comment">// param的类型是const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(rx); 		<span class="comment">// T是const int</span></span><br><span class="line">			<span class="comment">// param的类型时const int&amp;</span></span><br></pre></td></tr></table></figure>
+<p> 这里的引用进行忽略。</p>
+<p>如果我们把 f 的参数类型从 T&amp; 变成 const T&amp; ， 情况就会发生变化，由于 param 的声明是 const 引用的， cx 和 rx 的 const 特性会被保留， 这样的话 T 的 const 特性就没有必要了。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">const</span> T&amp; param)</span></span>; <span class="comment">// param现在是const的引用</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">27</span>; <span class="comment">// 和之前一样</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> cx = x; <span class="comment">// 和之前一样</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span>&amp; rx = x; <span class="comment">// 和之前一样</span></span><br><span class="line"><span class="built_in">f</span>(x); <span class="comment">// T是int， param的类型是const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(cx); <span class="comment">// T是int， param的类型是const int&amp;</span></span><br><span class="line"><span class="built_in">f</span>(rx); <span class="comment">// T是int， param的类型是const int&amp;</span></span><br></pre></td></tr></table></figure>
+<p>如果param是一个指针(或者指向const的指针)而不是引用，情况也类似</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T* param)</span></span>; <span class="comment">// param是一个指针</span></span><br><span class="line"><span class="type">int</span> x = <span class="number">27</span>; <span class="comment">// 和之前一样</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> *px = &amp;x; <span class="comment">// px是一个指向const int x的指针</span></span><br><span class="line"><span class="built_in">f</span>(&amp;x); <span class="comment">// T是int， param的类型是int*</span></span><br><span class="line"><span class="built_in">f</span>(px); <span class="comment">// T是const int</span></span><br><span class="line"><span class="comment">// param的类型时const int</span></span><br></pre></td></tr></table></figure>
+<h3 id="ParamType-是个通用的引用（-Universal-Reference）"><a href="#ParamType-是个通用的引用（-Universal-Reference）" class="headerlink" title="ParamType 是个通用的引用（ Universal Reference）"></a>ParamType 是个通用的引用（ Universal Reference）</h3><ol>
+<li>如果 expr 是一个左值， T 和 ParamType 都会被推导成左值引用。 这有些不同寻常。 第一， 这是模板类型 T 被推导成一个引用的唯一情况。 第二， 尽管 ParamType 利用右值引用的语法来进行推导， 但是他最终推导出来的类型是左值引用。</li>
+<li>如果 expr 是一个右值， 那么就执行“普通”的法则（ 第一种情况）  </li>
+</ol>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename T&gt;</span><br><span class="line">void f(T&amp;&amp; param);	 	<span class="regexp">//</span> param现在是一个通用的引用</span><br><span class="line">int x = <span class="number">27</span>; 			<span class="regexp">//</span> 和之前一样</span><br><span class="line">const int cx = x; 		<span class="regexp">//</span> 和之前一样</span><br><span class="line">const int&amp; rx = x;	 	<span class="regexp">//</span> 和之前一样</span><br><span class="line">f(x); 					<span class="regexp">//</span> x是左值， 所以T是int&amp;</span><br><span class="line">						<span class="regexp">//</span> param的类型也是int&amp;</span><br><span class="line">f(cx); 					<span class="regexp">//</span> cx是左值， 所以T是const int&amp;</span><br><span class="line">						<span class="regexp">//</span> param的类型也是const int&amp;</span><br><span class="line">f(rx); 					<span class="regexp">//</span> rx是左值， 所以T是const int&amp;</span><br><span class="line">						<span class="regexp">//</span> param的类型也是const int&amp;</span><br><span class="line">f(<span class="number">27</span>); 					<span class="regexp">//</span> <span class="number">27</span>是右值， 所以T是int</span><br><span class="line">						<span class="regexp">//</span> 所以param的类型是int&amp;&amp;</span><br></pre></td></tr></table></figure>
+<h3 id="ParamType-既不是指针也不是引用"><a href="#ParamType-既不是指针也不是引用" class="headerlink" title="ParamType 既不是指针也不是引用"></a>ParamType 既不是指针也不是引用</h3><p>当 ParamType 既不是指针也不是引用， 我们把它处理成pass-by-value：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>; <span class="comment">// param现在是pass-by-value</span></span><br></pre></td></tr></table></figure>
+<p>这就意味着 param 就是完全传给他的参数的一份拷贝——一个完全新的对象。 基于这个事实可以从 expr 给出推导的法则：  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int x = <span class="number">27</span>; <span class="regexp">//</span> 和之前一样</span><br><span class="line">const int cx = x; <span class="regexp">//</span> 和之前一样</span><br><span class="line">const int&amp; rx = x; <span class="regexp">//</span> 和之前一样</span><br><span class="line">f(x); <span class="regexp">//</span> T和param的类型都是int</span><br><span class="line">f(cx); <span class="regexp">//</span> T和param的类型也都是int</span><br><span class="line">f(rx); <span class="regexp">//</span> T和param的类型还都是int</span><br></pre></td></tr></table></figure>
+<p>注意尽管 cx 和 rx 都是 const 类型， param 却不是 const 的。 这是有道理的。 param 是一个和 cx 和 rx 独立的对象——一个 cx 和 rx 的拷贝。  </p>
+<h3 id="数组参数"><a href="#数组参数" class="headerlink" title="数组参数"></a>数组参数</h3><p>就是数组类型和指针类型是不一样的， 尽管它们通常看起来是可以替换的。 一个最基本的幻觉就是在很多的情况下， 一个数组会被退化成一个指向其第一个元素的指针。 这个退化的代码常常如此：  </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">char</span> name[] = <span class="string">&quot;J. P. Briggs&quot;</span>; <span class="comment">// name的类型是const char[13]</span></span><br><span class="line"><span class="type">const</span> <span class="type">char</span> * ptrToName = name; <span class="comment">// 数组被退化成指针</span></span><br></pre></td></tr></table></figure>
+<p>在这里， const char<em> 指针 ptrToName 使用 name 初始化， 实际的 name 的类型是 constchar[13] 。 这些类型（ const char</em> 和 const char[13] ） 是不一样的， 但是因为数组到指针的退化规则， 代码会被正常编译。  </p>
+<p>如果一个数组传递给一个安置传递的模板参数会如何?<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>; <span class="comment">// 模板拥有一个按值传递的参数</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">f</span>(name); <span class="comment">// T和param的类型会被推到成什么呢？</span></span><br></pre></td></tr></table></figure></p>
+<p>因为数组参数声明会被当做指针参数， 传递给模板函数的按值传递的数组参数会被退化成指针类型。 这就意味着在模板 f 的调用中， 模板参数 T 被推导成 const char* ：  </p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(<span class="keyword">name</span>); // <span class="keyword">name</span>是个数组， 但是T被推导成const <span class="built_in">char</span>*</span><br></pre></td></tr></table></figure>
+<p>若我们使用引用则</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T&amp; param)</span></span>; <span class="comment">// 引用参数的模板</span></span><br></pre></td></tr></table></figure>
+<p>然后传递一个数组给他则</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(name); <span class="comment">// 传递数组给f</span></span><br></pre></td></tr></table></figure>
+<p>T最后推导出来的实际类型是数组。类型推导包括了数组的长度， 所以在这个例子里面， T 被推导成了 const char [13] ， 函数 f 的参数（ 数组的引用） 被推导成了 const char(&amp;)[13]   </p>
+<p>声明数组的引用可以使的创造出一个推导出一个数组包含的元素长度的模板：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在编译的时候返回数组的长度（ 数组参数没有名字，</span></span><br><span class="line"><span class="comment">// 因为只关心数组包含的元素的个数）</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, std::<span class="type">size_t</span> N&gt;</span></span><br><span class="line"><span class="function"><span class="keyword">constexpr</span> std::<span class="type">size_t</span> <span class="title">arraySize</span><span class="params">(T (&amp;)[N])</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> N; <span class="comment">// constexpr和noexcept在随后的条款中介绍</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="函数模板"><a href="#函数模板" class="headerlink" title="函数模板"></a>函数模板</h3><p>数组并不是C++唯一可以退化成指针的东西。 函数类型可以被退化成函数指针 。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">someFunc</span><span class="params">(<span class="type">int</span>， <span class="type">double</span>)</span></span>; 	<span class="comment">// someFunc是一个函数</span></span><br><span class="line">								<span class="comment">// 类型是void(int, double)</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f1</span><span class="params">(T param)</span></span>; 				<span class="comment">// 在f1中 参数直接按值传递</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f2</span><span class="params">(T&amp; param)</span></span>; 				<span class="comment">// 在f2中 参数是按照引用传递</span></span><br><span class="line"><span class="built_in">f1</span>(someFunc); 					<span class="comment">// param被推导成函数指针</span></span><br><span class="line">								<span class="comment">// 类型是void(*)(int, double)</span></span><br><span class="line"><span class="built_in">f2</span>(someFunc);					 <span class="comment">// param被推导成函数指针</span></span><br><span class="line">								<span class="comment">// 类型时void(&amp;)(int, double)</span></span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>在模板类型推导的时候，有引用特性的参数的引用特性会被忽略</td>
+</tr>
+<tr>
+<td>在推导通用引用参数的时候， 左值会被特殊处理</td>
+</tr>
+<tr>
+<td>在推导按值传递的参数时候， const 和/或 volatile 参数会被视为非 const 和 非 volatile</td>
+</tr>
+<tr>
+<td>在模板类型推导的时候， 参数如果是数组或者函数名称， 他们会被退化成指针， 除非是用 在初始化引用类型</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="条款2-理解auto-类型推导"><a href="#条款2-理解auto-类型推导" class="headerlink" title="条款2: 理解auto 类型推导"></a>条款2: 理解auto 类型推导</h2><p>auto类型推导与前面的模板推导基本相同，只存在一种情况不大相同。在一个用 auto 声明的变量上， 类型声明代替了 ParamType的作用， 所以也有三种情况：  </p>
+<ul>
+<li>情况1： 类型声明是一个指针或者是一个引用， 但不是一个通用的引用</li>
+<li>情况2： 类型声明是一个通用引用</li>
+<li>情况3： 类型声明既不是一个指针也不是一个引用  </li>
+</ul>
+<p>我们已经看了情况1和情况3的例子：  </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">auto</span> x = <span class="number">27</span>; <span class="comment">// 情况3（ x既不是指针也不是引用）</span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">auto</span> cx = x; <span class="comment">// 情况3（ cx二者都不是）</span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">auto</span>&amp; rx = x; <span class="comment">// 情况1（ rx是一个非通用的引用）</span></span><br></pre></td></tr></table></figure>
+<p>情况2则如下</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">auto&amp;&amp; uref1 = x; 		<span class="regexp">//</span> x是int并且是左值</span><br><span class="line">						<span class="regexp">//</span> 所以uref1的类型是int&amp;</span><br><span class="line">auto&amp;&amp; uref2 = cx; 		<span class="regexp">//</span> cx是int并且是左值</span><br><span class="line">						<span class="regexp">//</span> 所以uref2的类型是const int&amp;</span><br><span class="line">auto&amp;&amp; uref3 = <span class="number">27</span>;		 <span class="regexp">//</span> <span class="number">27</span>是int并且是右值</span><br><span class="line">						<span class="regexp">//</span> 所以uref3的类型是int&amp;&amp;</span><br></pre></td></tr></table></figure>
+<p>条款1讲解了在非引用类型声明里， 数组和函数名称如何退化成指针。 这在 auto 类型推导上面也是一样：  </p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="type">char</span> name[] = // name的类型是<span class="keyword">const</span> <span class="type">char</span>[<span class="number">13</span>]</span><br><span class="line"><span class="string">&quot;R. N. Briggs&quot;</span>;</span><br><span class="line"><span class="type">auto</span> arr1 = name; // arr1的类型是<span class="keyword">const</span> <span class="type">char</span>*</span><br><span class="line"><span class="type">auto</span>&amp; arr2 = name; // arr2的类型是<span class="keyword">const</span> <span class="type">char</span> (&amp;)[<span class="number">13</span>]</span><br><span class="line"><span class="type">void</span> someFunc(<span class="type">int</span>, double); // someFunc是一个函数， 类型是</span><br><span class="line">// <span class="type">void</span> (*)(<span class="type">int</span>, double)</span><br><span class="line"><span class="type">auto</span>&amp; func2 = someFunc; // func1的类型是</span><br><span class="line">// <span class="type">void</span> (&amp;)(<span class="type">int</span>, double)</span><br></pre></td></tr></table></figure>
+<p>正如你所见， auto 类型推导和模板类型推导工作很类似。  </p>
+<p>除了有一种情况是不一样的。 我们从如果你想声明一个用27初始化的 int  。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int x1 <span class="operator">=</span> <span class="number">27</span><span class="comment">;</span></span><br><span class="line">int x2(<span class="number">27</span>)<span class="comment">;</span></span><br><span class="line">int x3 <span class="operator">=</span> &#123; <span class="number">27</span> &#125;<span class="comment">;</span></span><br><span class="line">int x4&#123; <span class="number">27</span> &#125;<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>综上四种语法， 都会生成一种结果： 一个拥有27数值的 int 。  </p>
+<p>但是若把int替换成auto，则会出现如下情况。</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto x1 <span class="operator">=</span> <span class="number">27</span><span class="comment">;</span></span><br><span class="line">auto x2(<span class="number">27</span>)<span class="comment">;</span></span><br><span class="line">auto x3 <span class="operator">=</span> &#123;<span class="number">27</span>&#125;<span class="comment">;</span></span><br><span class="line">auto x4&#123; <span class="number">27</span> &#125;<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>头两个的确是一样的， 声明一个初始化值为27的 int 。 然而后面两个， 声明了一个类型std::intializer_list<int> 的变量， 这个变量包含了一个单一的元素27！  </int></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x1 = <span class="number">27</span>; 	<span class="comment">// 类型时int， 值是27</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">x2</span><span class="params">(<span class="number">27</span>)</span></span>; 	<span class="comment">// 同上</span></span><br><span class="line"><span class="keyword">auto</span> x3 = &#123; <span class="number">27</span> &#125;; <span class="comment">// 类型是std::intializer_list&lt;int&gt;</span></span><br><span class="line">					<span class="comment">// 值是&#123; 27 &#125;</span></span><br><span class="line"><span class="keyword">auto</span> x4&#123; <span class="number">27</span> &#125;; <span class="comment">// 同上</span></span><br></pre></td></tr></table></figure>
+<p><strong>对待花括号初始化的行为是 auto 唯一和模板类型推导不一样的地方。</strong> 当 auto 声明变量被使用一对花括号初始化， 推导的类型是 std::intializer_list 的一个实例。 但是如果相同的初始化递给相同的模板， 类型推导会失败， 代码不能编译。  </p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x = &#123; <span class="number">11</span>, <span class="number">23</span>, <span class="number">9</span> &#125;; 	<span class="comment">// x的类型是</span></span><br><span class="line">							<span class="comment">// std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; 		<span class="comment">// 和x的声明等价的</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(T param)</span></span>; 			<span class="comment">// 模板</span></span><br><span class="line"><span class="built_in">f</span>(&#123; <span class="number">11</span>, <span class="number">23</span>, <span class="number">9</span> &#125;); 			<span class="comment">// 错误的！ 没办法推导T的类型</span></span><br></pre></td></tr></table></figure>
+<p>但是， 如果你明确模板的 param 的类型是一个不知道 T 类型的 std::initializer_list<T> ：  </T></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(std::initializer_list&lt;T&gt; initList)</span></span>;</span><br><span class="line"><span class="built_in">f</span>(&#123; <span class="number">11</span>, <span class="number">23</span>, <span class="number">9</span> &#125;); <span class="comment">// T被推导成int， initList的</span></span><br><span class="line"><span class="comment">// 类型是std::initializer_list&lt;int&gt;</span></span><br></pre></td></tr></table></figure>
+<p>所以 auto 和模板类型推导的本质区别就是 auto 假设花括号初始化代表的是std::initializer_list， 但是模板类型推导却不是 。所以一个使用 auto 声明的返回值的函数， 返回一个花括号初始化就无法编译。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">createInitList</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">return</span> &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;; <span class="comment">// 编译错误： 不能推导出&#123; 1, 2, 3 &#125;的类型</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在C++14的lambda里面， 当 auto 用在参数类型声明的时候也是如此：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; v;</span><br><span class="line">… </span><br><span class="line"><span class="keyword">auto</span> resetV =</span><br><span class="line">[&amp;v](<span class="type">const</span> <span class="keyword">auto</span>&amp; newValue) &#123; v = newValue; &#125; <span class="comment">// C++14</span></span><br><span class="line">…</span><br><span class="line"><span class="built_in">resetV</span>(&#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;); <span class="comment">// 编译错误， 不能推导出&#123; 1, 2, 3 &#125;的类型</span></span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auto 类型推导通常和模板类型推导类似， 但是 auto 类型推导假定花括号初始化代表的 类型是 std::initializer_list ， 但是模板类型推导却不是这样</td>
+</tr>
+<tr>
+<td>auto 在函数返回值或者lambda参数里面执行模板的类型推导， 而不是通常意义 的 auto 类型推导</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="auto-关键字"><a href="#auto-关键字" class="headerlink" title="auto 关键字"></a>auto 关键字</h1><h2 id="条款3-优先使用-auto-而非显式类型声明"><a href="#条款3-优先使用-auto-而非显式类型声明" class="headerlink" title="条款3: 优先使用 auto 而非显式类型声明"></a>条款3: 优先使用 auto 而非显式类型声明</h2><p>由于 auto 使用类型推导（ 参见条款2） ， 它可以表示那些仅仅被编译器知晓的类型：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> dereUPLess = <span class="comment">// comparison func.</span></span><br><span class="line">[](<span class="type">const</span> std::unique_ptr&lt;Widget&gt;&amp; p1, <span class="comment">// for Widgets</span></span><br><span class="line"><span class="type">const</span> std::unique_ptr&lt;Widget&gt;&amp; p2) <span class="comment">// pointed to by</span></span><br><span class="line">&#123; <span class="keyword">return</span> *p1 &lt; *p2&#125;; <span class="comment">// std::unique_ptrs</span></span><br></pre></td></tr></table></figure>
+<p>非常酷。 在 C++14 中， 模板（ 原文为temperature） 被进一步丢弃， 因为使用 lambda 表达式的参数可以包含 auto ：  </p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">auto</span> derefLess = <span class="comment">// C++14 comparison</span></span><br><span class="line"><span class="string">[]</span>(<span class="keyword">const</span> <span class="built_in">auto</span>&amp; p1, <span class="comment">// function for</span></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">auto</span>&amp; p2) <span class="comment">// values pointed</span></span><br><span class="line">&#123; <span class="keyword">return</span> *p1 &lt; *p2; &#125;;</span><br></pre></td></tr></table></figure>
+<p>auto 的优点除了可以避免未初始化的变量， 变量声明引起的歧义， 直接持有封装体的能力。还有一个就是可以避免“类型截断”问题。 下面有个例子， 你可能见过或者写过：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; v;</span><br><span class="line">...</span><br><span class="line"><span class="type">unsigned</span> sz = v.<span class="built_in">size</span>();</span><br></pre></td></tr></table></figure>
+<p>v.size() 定义的返回类型是 std::vector<int>::size_type ， 但是很少有开发者对此十分清楚。 std::vector<int>::size_type 被指定为一个非符号的整数类型， 因此很多程序员认为 unsigned 类型是足够的， 然后写出了上面的代码。 这将导致一些有趣的后果。 比如说在32位 Windows 系统上， unsigned 和 std::vector<int>::size_type 有同样的大小， 但是在64位的 Windows 上， unsigned 是32bit的， 而 std::vector<int>::size_type 是64bit的。 这意味着上面的代码在32位 Windows 系统上工作良好， 但是在64位 Windows 系统上时有可能不正确， 当应用程序从32位移植到64位上时， 谁又想在这种问题上浪费时间呢？ 使用 auto 可以保证你不必被上面的东西所困扰：  </int></int></int></int></p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">auto</span> sz = v.size() // sz&#x27;s <span class="keyword">type</span> <span class="keyword">is</span> std::vector&lt;<span class="type">int</span>&gt;::size_type</span><br></pre></td></tr></table></figure>
+<p>仍然不太确定使用 auto 的高明之处？ 看看下面的代码：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">std::unordered_map&lt;std::string, <span class="type">int</span>&gt; m;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">for</span> (<span class="type">const</span> std::pair&lt;std::string, <span class="type">int</span>&gt;&amp; p : m)</span><br><span class="line">&#123; .</span><br><span class="line">.. <span class="comment">// do something with p</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这看上去完美合理。 但是有一个问题， 你看出来了吗？ 意识到 std::unorder_map 的 key 部分是 const 类型的， 在哈希表中的 std::pair 的类型不是 std::pair<std::string, int> ， 而是 std::pair<const std::sting, int> 。  这种无意的类型不匹配可以通过 auto 解决 。</const></std::string,></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">const</span> <span class="built_in">auto</span>&amp; p : m)</span><br><span class="line">&#123;</span><br><span class="line">... <span class="comment">// as before</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auto 变量一定要被初始化， 并且对由于类型不匹配引起的兼容和效率问题有免疫力， 可 以简单化代码重构， 一般会比显式的声明类型敲击更少的键盘</td>
+</tr>
+<tr>
+<td>auto 类型的变量也受限于条款2和条款6中描述的陷阱</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="条款4-当auto推导出非预期类型时应当使用显式的类型初始化"><a href="#条款4-当auto推导出非预期类型时应当使用显式的类型初始化" class="headerlink" title="条款4:当auto推导出非预期类型时应当使用显式的类型初始化"></a>条款4:当auto推导出非预期类型时应当使用显式的类型初始化</h2><p>条款5解释了使用 auto 关键字去声明变量， 这样就比直接显示声明类型提供了一系列的技术优势， 但是有时候 auto 的类型推导会和你想的南辕北辙。   </p>
+<p>举一个例子， 假设我有一个函数接受一个 Widget 返回一个 std::vector<bool> ， 其中每个 bool 表征 Widget 是否接受一个特定的特性：  </bool></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::vector&lt;<span class="type">bool</span>&gt; <span class="title">features</span><span class="params">(<span class="type">const</span> Widget&amp; w)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>进一步的， 假设第五个bit表示 Widget 是否有高优先级。 我们可以这样写代码：  </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Widget w;</span><br><span class="line">… </span><br><span class="line"><span class="built_in">bool</span> highPriority = features(w)<span class="literal">[<span class="number">5</span>]</span>; <span class="comment">// w是不是个高优先级的？</span></span><br><span class="line">… </span><br><span class="line">process<span class="constructor">Widget(<span class="params">w</span>, <span class="params">highPriority</span>)</span>; <span class="comment">// 配合优先级处理w</span></span><br></pre></td></tr></table></figure>
+<p>这份代码没有任何问题。 它工作正常。 但是如果我们做一个看起来无伤大雅的修改，把 highPriority 的显式的类型换成 auto ：  </p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto highPriority <span class="operator">=</span> features(w)[<span class="number">5</span>]<span class="comment">; // w是不是个高优先级的？</span></span><br></pre></td></tr></table></figure>
+<p>情况变了。 所有的代码还是可以编译， 但是他的行为变得不可预测：  </p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">process<span class="constructor">Widget(<span class="params">w</span>, <span class="params">highPriority</span>)</span>; <span class="comment">// 未定义行为</span></span><br></pre></td></tr></table></figure>
+<p>正如注释中所提到的， 调用 processWidget 现在会导致未定义的行为。 但是为什么呢？ 答案是非常的令人惊讶的。 在使用 auto 的代码中， highPriority 的类型已经不是 bool 了。 尽管 std::vector<bool> 从概念上说是 bool 的容器， 对 std::vector<bool> 的 operator[] 运算符并不一定是返回容器中的元素的引用（ std::vector::operator[] 对所有的类型都返回引用， 就是除了 bool ） 。 事实上， 他返回的是一个 std::vector<bool>::reference 对象（ 是一个在 std::vector<bool> 中内嵌的class） 。  </bool></bool></bool></bool></p>
+<h2 id="条款5：优先使用-nullptr-而不是-0-或者-NULL"><a href="#条款5：优先使用-nullptr-而不是-0-或者-NULL" class="headerlink" title="条款5：优先使用 nullptr 而不是 0 或者 NULL"></a>条款5：优先使用 nullptr 而不是 0 或者 NULL</h2><p>在 C++98 中， 这意味着重载指针和整数类型的函数的行为会令人吃惊。 传递 0 或者 NULL 作为参数给重载函数永远不会调用指针重载的那个函数：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">int</span>)</span></span>; 	<span class="comment">// 函数f的三个重载</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">bool</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">f</span><span class="params">(<span class="type">void</span>*)</span></span>;</span><br><span class="line"><span class="built_in">f</span>(<span class="number">0</span>); 			<span class="comment">// 调用 f(int)， 而非f(void*)</span></span><br><span class="line"><span class="built_in">f</span>(<span class="literal">NULL</span>);	 	<span class="comment">// 可能无法编译， 但是调用f(int)</span></span><br><span class="line">				<span class="comment">// 不可能调用 f(void*)</span></span><br></pre></td></tr></table></figure>
+<p>使用 nullptr 作为参数去调用重载函数 f 将会调用 f(void*) 重载体， 因为 nullptr 不能被视为整数类型的：  </p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">f</span>(nullptr); <span class="comment">//调用f(void*)重载体</span></span><br></pre></td></tr></table></figure>
+<p>另一方面， 你如果看到下面的代码：  </p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auto result <span class="operator">=</span> findRecord( /* arguments */)<span class="comment">;</span></span><br><span class="line">if(reuslt <span class="operator">=</span><span class="operator">=</span> nullptr)&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>明显就没有歧义了： result 一定是个指针类型。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>相较于 0 和 NULL ， 优先使用 nullptr</td>
+</tr>
+<tr>
+<td>避免整数类型和指针类型之间的重载</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="优先使用声明别名而不是-typedef"><a href="#优先使用声明别名而不是-typedef" class="headerlink" title="优先使用声明别名而不是 typedef"></a>优先使用声明别名而不是 typedef</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typname T&gt; 							<span class="regexp">//</span> MyAllocList&lt;T&gt;</span><br><span class="line">using MyAllocList = std::list&lt;T, MyAlloc&lt;T&gt;&gt;; 	<span class="regexp">//</span> 等同于</span><br><span class="line">												<span class="regexp">//</span> std::list&lt;T,</span><br><span class="line">												<span class="regexp">//</span> MyAlloc&lt;T&gt;&gt;</span><br><span class="line">MyAllocList&lt;Widget&gt; lw; <span class="regexp">//</span> 终端代码</span><br></pre></td></tr></table></figure>
+<p>使用using 来进行别名声明。而若使用 typedef ， 你不得不从草稿图开始去做一个蛋糕：  </p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">template&lt;typename T&gt; <span class="regexp">//</span> MyAllocList&lt;T&gt;<span class="symbol">:</span><span class="symbol">:type</span></span><br><span class="line">struct MyAllocList &#123; <span class="regexp">//</span> 等同于</span><br><span class="line">type<span class="keyword">def</span> <span class="title function_">std</span><span class="symbol">:</span><span class="symbol">:list&lt;T</span>, MyAlloc&lt;T&gt;&gt; type; <span class="regexp">//</span> std::list&lt;T,</span><br><span class="line">&#125;; <span class="regexp">//</span> MyAlloc&lt;T&gt;&gt;</span><br><span class="line">MyAllocList&lt;Widget&gt;<span class="symbol">:</span><span class="symbol">:type</span> lw; <span class="regexp">//</span> 终端代码</span><br></pre></td></tr></table></figure>
+<p>如果你想在一个模板中使用 typedef 来完成创建一个节点类型可以被模板参数指定的链接表的任务， 你必须在 typedef 名称之前使用 typename   </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="comment">// Widget&lt;T&gt; 包含</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span>&#123; <span class="comment">// 一个 MyAloocList&lt;T&gt;</span></span><br><span class="line"><span class="keyword">private</span>: <span class="comment">// 作为一个数据成员</span></span><br><span class="line"><span class="keyword">typename</span> MyAllocList&lt;T&gt;::type list;</span><br><span class="line">...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>此处， MyAllocList<T>::type 表示一个依赖于模板类型参数 T 的类型， 因此 MyAllocList<T>::type 是一个依赖类型（ dependent type ） ， C++ 中许多令人喜爱的原则中的一个就是在依赖类型的名称之前必须冠以 typename 。  </T></T></p>
+<p>如果 MyAllocList 被定义为一个声明别名， 就不需要使用 typename   </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;typname T&gt;</span><br><span class="line"><span class="keyword">using</span> MyAllocList = std::list&lt;T, MyAlloc&lt;T&gt;&gt;; <span class="comment">// 和以前一样</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">MyAllocList&lt;T&gt; list; <span class="comment">// 没有typename</span></span><br><span class="line">... <span class="comment">// 没有::type</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>对你来说， MyAllocList<T> （ 使用模板别名） 看上去依赖于模板参数 T ， 正如 MyAllocList<T>::type （ 使用内嵌的 typdef ） 一样， 但是你不是编译器。 当编译器处理 Widget 遇到 MyAllocList<T> （ 使用模板别名） ， 编译器知道 MyAllocList<T> 是一个类型名称， 因为 MyAllocList 是一个模板别名： 它必须是一个类型。 MyAllocList<T> 因此是一个非依赖类型（ non-dependent type ） ， 指定符 typename 是不需要和不允许的。  </T></T></T></T></T></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>typedef 不支持模板化， 但是别名声明支持</td>
+</tr>
+<tr>
+<td>模板别名避免了 ::type 后缀， 在模板中， typedef 还经常要求使用 typename 前缀</td>
+</tr>
+<tr>
+<td>C++14 为 C++11 中的类型特征转换提供了模板别名</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="优先使用作用域限制的eums而不是无作用域的-enum"><a href="#优先使用作用域限制的eums而不是无作用域的-enum" class="headerlink" title="优先使用作用域限制的eums而不是无作用域的 enum"></a>优先使用作用域限制的eums而不是无作用域的 enum</h2><p>一般而言， 在花括号里面声明的变量名会限制在括号外的可见性。 但是这对于 C++98 风格的 enums 中的枚举元素并不成立。 枚举元素和包含它的枚举类型同属一个作用域空间， 这意味着在这个作用域中不能再有同样名字的定义：  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">enum Color &#123; black, white, red&#125;; 	 <span class="regexp">//</span> black, white, red 和</span><br><span class="line">									 <span class="regexp">//</span> Color 同属一个定义域</span><br><span class="line">auto white = false;					 <span class="regexp">//</span> 错误！ 因为 white</span><br><span class="line">									<span class="regexp">//</span> 在这个定义域已经被声明过</span><br></pre></td></tr></table></figure>
+<p>事实就是枚举元素泄露到包含它的枚举类型所在的作用域中， 对于这种类型的 enum 官方称作无作用域的（ unscoped ） 。 在 C++11 中对应的使用作用域的enums（ scoped enums ） 不会造成这种泄露：  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">enum class Color &#123; black, white, red&#125;; 	<span class="regexp">//</span> black, white, red</span><br><span class="line">										<span class="regexp">//</span> 作用域为 Color</span><br><span class="line">auto white = false; 					<span class="regexp">//</span> fine, 在这个作用域内</span><br><span class="line">										<span class="regexp">//</span> 没有其他的 <span class="string">&quot;white&quot;</span></span><br><span class="line"></span><br><span class="line">Color c = white; 						<span class="regexp">//</span> 错误！ 在这个定义域中</span><br><span class="line">										<span class="regexp">//</span> 没有叫<span class="string">&quot;white&quot;</span>的枚举元素</span><br><span class="line">Color c = Color::white; 				<span class="regexp">//</span> fine</span><br><span class="line">auto c = Color::white; 					<span class="regexp">//</span> 同样没有问题（ 和条款<span class="number">5</span></span><br><span class="line">										<span class="regexp">//</span> 的建议项吻合）</span><br></pre></td></tr></table></figure>
+<p>因为限制作用域的 enum 是通过”enum class”来声明的， 它们有时被称作枚举类（ enum class ） 。  </p>
+<p>并且无作用域的enum会存在隐性类型转换。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="title class_">Color</span> &#123; black, white, red &#125;; 		<span class="comment">// 无限制作用域的enum</span></span><br><span class="line">std::vector&lt;std::<span class="type">size_t</span>&gt; 				<span class="comment">// 返回x的质因子的函数</span></span><br><span class="line"><span class="built_in">primeFactors</span>(std::<span class="type">size_t</span> x);</span><br><span class="line">Color c = red;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">if</span> (c &lt; <span class="number">14.5</span> )&#123; 						<span class="comment">// 将Color和double类型比较！</span></span><br><span class="line"><span class="keyword">auto</span> factors = 							<span class="comment">// 计算一个Color变量的质因子</span></span><br><span class="line"><span class="built_in">primeFactors</span>(c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在 “enum” 后增加一个 “class” ， 就可以将一个无作用域的 enum 转换为一个有作用域的 enum ， 变成一个有作用域的 enum 之后， 事情就变得不一样了。 在有作用域的 enum 中不存在从枚举元素到其他类型的隐式转换：  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">enum class Color &#123; black, white, red &#125;; 		<span class="regexp">//</span> 有作用域的enum</span><br><span class="line">Color c = Color::red; 							<span class="regexp">//</span> 和前面一样， 但是</span><br><span class="line">... 											<span class="regexp">//</span> 加上一个作用域限定符</span><br><span class="line"><span class="keyword">if</span> (c &lt; <span class="number">14.5</span>)&#123; 									<span class="regexp">//</span> 出错！ 不能将Color类型</span><br><span class="line">												<span class="regexp">//</span> 和double类型比较</span><br><span class="line">auto factors = 									<span class="regexp">//</span> 出错！ 不能将Color类型传递给</span><br><span class="line">primeFactors(c); 								<span class="regexp">//</span> 参数类型为std::size_t的函数</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你就是想将 Color 类型转换为一个其他类型， 使用类型强制转换（ cast ） 可以满足你这种变态的需求:  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(<span class="built_in">static_cast</span>&lt;<span class="type">double</span>&gt;(c) &lt; <span class="number">14.5</span>) &#123; <span class="comment">// 怪异但是有效的代码</span></span><br><span class="line"><span class="keyword">auto</span> factors = <span class="comment">// 感觉不可靠</span></span><br><span class="line"><span class="built_in">primeFactors</span>(<span class="keyword">static_cast</span>&lt;std::<span class="built_in">size_t</span>(c)); <span class="comment">// 但是可以编译</span></span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>相较于无定义域的 enum ， 有定义域的 enum 也许还有第三个优势， 因为有定义域的 enum 可以被提前声明的， 即可以不指定枚举元素而进行声明:  </p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">enum</span> Color; <span class="comment">// 出错！</span></span><br><span class="line"><span class="built_in">enum</span> <span class="keyword">class</span> <span class="title class_">Color</span>; <span class="comment">// 没有问题</span></span><br></pre></td></tr></table></figure>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C++98 风格的 enum 是没有作用域的 enum</td>
+</tr>
+<tr>
+<td>有作用域的枚举体的枚举元素仅仅对枚举体内部可见。 只能通过类型转换（ cast ） 转换 为其他类型</td>
+</tr>
+<tr>
+<td>有作用域和没有作用域的 enum 都支持指定潜在类型。 有作用域的 enum 的默认潜在类型 是 int 。 没有作用域的 enum 没有默认的潜在类型。</td>
+</tr>
+<tr>
+<td>有作用域的 enum 总是可以前置声明的。 没有作用域的 enum 只有当指定潜在类型时才可 以前置声明。</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="优化使用delete键字删除函数而不是private却又不实现的函数"><a href="#优化使用delete键字删除函数而不是private却又不实现的函数" class="headerlink" title="优化使用delete键字删除函数而不是private却又不实现的函数"></a>优化使用delete键字删除函数而不是private却又不实现的函数</h2><p>使用delete关键字可让函数在重载里不会隐式调用已经被删除的函数，而若使用private可能会隐式的调用未实现的private函数。</p>
+<p>当有一个函数，它在类的外边和内部都是是无法工作的， 当它工作时， 知道链接的时候可能又不工作了。 所以还是坚持使用删除函数吧。  </p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>总结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>优先使用删除函数而不是私有而不定义的函数</td>
+</tr>
+<tr>
+<td>任何函数都可以被声明为删除， 包括非成员函数和模板实现</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="使用override关键字声明覆盖的函数"><a href="#使用override关键字声明覆盖的函数" class="headerlink" title="使用override关键字声明覆盖的函数"></a>使用override关键字声明覆盖的函数</h2><p>若有父类有虚函数，派生类可以使用override关键字进行覆盖，而若要使用override关键字进行覆盖则需要遵守以下规则 。</p>
+<ul>
+<li>基类中的函数被声明为虚的。  </li>
+<li>基类中和派生出的函数必须是完全一样的（ 出了虚析构函数） 。  </li>
+<li>基类中和派生出的函数的参数类型必须完全一样。  </li>
+<li>基类中和派生出的函数的常量特性必须完全一样。  </li>
+<li>基类中和派生出的函数的返回值类型和异常声明必须使兼容的。  </li>
+<li>函数的引用修饰符必须完全一样。 成员函数的引用修饰符是很少被提及的 C++11 的特性， 所以你之前没有听说过也不要惊奇。这些修饰符使得将这些函数只能被左值或者右值使用成为可能。   </li>
+</ul>
+<p>成员函数不需要声明为虚就可以使用它们：  </p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Widget&#123;</span><br><span class="line">public:</span><br><span class="line">...</span><br><span class="line">void doWork() &amp;; 			<span class="regexp">//</span> 只有当 *this 为左值时</span><br><span class="line">							<span class="regexp">//</span> 这个版本的 doWorkd()</span><br><span class="line">							<span class="regexp">//</span> 函数被调用</span><br><span class="line">void doWork() &amp;&amp;;			 <span class="regexp">//</span> 只有当 *this 为右值</span><br><span class="line">							<span class="regexp">//</span> 这个版本的 doWork()</span><br><span class="line">							<span class="regexp">//</span> 函数被调用</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">Widget makeWidget(); 		<span class="regexp">//</span> 工厂函数， 返回右值</span><br><span class="line">Widget w; 					<span class="regexp">//</span> 正常的对象（ 左值）</span><br><span class="line">...</span><br><span class="line">w.doWork(); 				<span class="regexp">//</span> 为左值调用 Widget::doWork()</span><br><span class="line">							<span class="regexp">//</span>（ 即 Widget::doWork &amp;）</span><br><span class="line">makeWidget().doWork(); 		<span class="regexp">//</span> 为右值调用 Widget::doWork()</span><br><span class="line">							<span class="regexp">//</span>（ 即 Widget::doWork &amp;&amp;）</span><br></pre></td></tr></table></figure>
+<p>如果一个虚函数在基类中有一个引用修饰符， 派生类中对应的那个也必须要有完全一样的引用修饰符。 如果不完全一样， 派生类中的声明的那个函数也会存在， 但是它不会覆盖基类中的任何东西。  </p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf1</span>() <span class="keyword">const</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf2</span>(<span class="params"><span class="built_in">int</span> x</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf3</span>() &amp;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mf4</span>() <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">class</span> <span class="title">Derived</span>: <span class="title">public</span> <span class="title">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf1</span>()</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf2</span>(<span class="params">unsigned <span class="built_in">int</span> x</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf3</span>() &amp;&amp;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mf4</span>() <span class="keyword">const</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以上代码因为未使用override，所以Derived 里面的mf1()与 Base里面的mf1()const 里面可能是重载关系。而若使用override关键字将会是真正的覆盖关系。</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title">Derived</span>: <span class="title">public</span> <span class="title">Base</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf1</span>() <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf2</span>(<span class="params">unsigned <span class="built_in">int</span> x</span>) <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf3</span>() &amp;&amp; <span class="keyword">override</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mf4</span>() <span class="keyword">const</span> <span class="keyword">override</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>而这种方式是无法通过编译的，因为与Base的参数完全不同。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C++</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/posts/ae4a2f5f/" rel="prev" title="more effective C++">
+      <i class="fa fa-chevron-left"></i> more effective C++
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/posts/d7325242/" rel="next" title="effective_STL">
+      effective_STL <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC"><span class="nav-number">1.</span> <span class="nav-text">类型推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E6%AC%BE1-%E7%90%86%E8%A7%A3%E6%A8%A1%E6%9D%BF%E6%8E%A8%E5%AF%BC"><span class="nav-number">1.1.</span> <span class="nav-text">条款1: 理解模板推导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ParamType-%E6%98%AF%E4%B8%AA%E9%9D%9E%E9%80%9A%E7%94%A8%E7%9A%84%E5%BC%95%E7%94%A8%E6%88%96%E8%80%85%E6%98%AF%E4%B8%80%E4%B8%AA%E6%8C%87%E9%92%88%E3%80%82"><span class="nav-number">1.1.1.</span> <span class="nav-text">ParamType 是个非通用的引用或者是一个指针。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ParamType-%E6%98%AF%E4%B8%AA%E9%80%9A%E7%94%A8%E7%9A%84%E5%BC%95%E7%94%A8%EF%BC%88-Universal-Reference%EF%BC%89"><span class="nav-number">1.1.2.</span> <span class="nav-text">ParamType 是个通用的引用（ Universal Reference）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ParamType-%E6%97%A2%E4%B8%8D%E6%98%AF%E6%8C%87%E9%92%88%E4%B9%9F%E4%B8%8D%E6%98%AF%E5%BC%95%E7%94%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">ParamType 既不是指针也不是引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.4.</span> <span class="nav-text">数组参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.1.5.</span> <span class="nav-text">函数模板</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E6%AC%BE2-%E7%90%86%E8%A7%A3auto-%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC"><span class="nav-number">1.2.</span> <span class="nav-text">条款2: 理解auto 类型推导</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#auto-%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">2.</span> <span class="nav-text">auto 关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E6%AC%BE3-%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8-auto-%E8%80%8C%E9%9D%9E%E6%98%BE%E5%BC%8F%E7%B1%BB%E5%9E%8B%E5%A3%B0%E6%98%8E"><span class="nav-number">2.1.</span> <span class="nav-text">条款3: 优先使用 auto 而非显式类型声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E6%AC%BE4-%E5%BD%93auto%E6%8E%A8%E5%AF%BC%E5%87%BA%E9%9D%9E%E9%A2%84%E6%9C%9F%E7%B1%BB%E5%9E%8B%E6%97%B6%E5%BA%94%E5%BD%93%E4%BD%BF%E7%94%A8%E6%98%BE%E5%BC%8F%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.2.</span> <span class="nav-text">条款4:当auto推导出非预期类型时应当使用显式的类型初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%A1%E6%AC%BE5%EF%BC%9A%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8-nullptr-%E8%80%8C%E4%B8%8D%E6%98%AF-0-%E6%88%96%E8%80%85-NULL"><span class="nav-number">2.3.</span> <span class="nav-text">条款5：优先使用 nullptr 而不是 0 或者 NULL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E5%A3%B0%E6%98%8E%E5%88%AB%E5%90%8D%E8%80%8C%E4%B8%8D%E6%98%AF-typedef"><span class="nav-number">2.4.</span> <span class="nav-text">优先使用声明别名而不是 typedef</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%99%90%E5%88%B6%E7%9A%84eums%E8%80%8C%E4%B8%8D%E6%98%AF%E6%97%A0%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84-enum"><span class="nav-number">2.5.</span> <span class="nav-text">优先使用作用域限制的eums而不是无作用域的 enum</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E4%BD%BF%E7%94%A8delete%E9%94%AE%E5%AD%97%E5%88%A0%E9%99%A4%E5%87%BD%E6%95%B0%E8%80%8C%E4%B8%8D%E6%98%AFprivate%E5%8D%B4%E5%8F%88%E4%B8%8D%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">2.6.</span> <span class="nav-text">优化使用delete键字删除函数而不是private却又不实现的函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8override%E5%85%B3%E9%94%AE%E5%AD%97%E5%A3%B0%E6%98%8E%E8%A6%86%E7%9B%96%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">2.7.</span> <span class="nav-text">使用override关键字声明覆盖的函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">刘王权</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/wangquanliu" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;wangquanliu" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/liuwangquan@163.com" title="E-Mail → liuwangquan@163.com"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘王权</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+    <span title="站点总字数">151k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:17</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
