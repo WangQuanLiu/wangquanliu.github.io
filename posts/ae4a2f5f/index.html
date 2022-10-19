@@ -23,12 +23,12 @@
   </script>
 
 
-  <meta name="description" content="基础类指针与引用的区别引用与指针的关系，引用需要一开始就要指定值，不可能用空，而指针可以初始为空。  不要对数组使用多态有代码 12345678class BST&amp;#123; ...&amp;#125;;class BalancedBST:public BST&amp;#123;...&amp;#125;;void printBSTArray(ostream&amp;s,const BST array[],int nu">
+  <meta name="description" content="基础类指针与引用的区别引用与指针的关系，引用需要一开始就要指定值，不可能用空，而指针可以初始为空。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="more effective C++">
 <meta property="og:url" content="http://wangquanliu.com/posts/ae4a2f5f/index.html">
 <meta property="og:site_name" content="王权个人博客">
-<meta property="og:description" content="基础类指针与引用的区别引用与指针的关系，引用需要一开始就要指定值，不可能用空，而指针可以初始为空。  不要对数组使用多态有代码 12345678class BST&amp;#123; ...&amp;#125;;class BalancedBST:public BST&amp;#123;...&amp;#125;;void printBSTArray(ostream&amp;s,const BST array[],int nu">
+<meta property="og:description" content="基础类指针与引用的区别引用与指针的关系，引用需要一开始就要指定值，不可能用空，而指针可以初始为空。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://wangquanliu.com/posts/ae4a2f5f/image-20221009212712220.png">
 <meta property="og:image" content="http://wangquanliu.com/posts/ae4a2f5f/image-20221009223411162.png">
@@ -78,7 +78,7 @@
 <meta property="og:image" content="http://wangquanliu.com/posts/ae4a2f5f/image-20221011085959493.png">
 <meta property="og:image" content="http://wangquanliu.com/posts/ae4a2f5f/image-20221011090818701.png">
 <meta property="article:published_time" content="2022-10-09T13:21:54.000Z">
-<meta property="article:modified_time" content="2022-10-19T13:08:27.004Z">
+<meta property="article:modified_time" content="2022-10-19T13:58:35.271Z">
 <meta property="article:author" content="刘王权">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -279,7 +279,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-10-19 21:08:27" itemprop="dateModified" datetime="2022-10-19T21:08:27+08:00">2022-10-19</time>
+                <time title="修改时间：2022-10-19 21:58:35" itemprop="dateModified" datetime="2022-10-19T21:58:35+08:00">2022-10-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -320,8 +320,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <span id="more"></span>
-<h1 id="基础类"><a href="#基础类" class="headerlink" title="基础类"></a>基础类</h1><h2 id="指针与引用的区别"><a href="#指针与引用的区别" class="headerlink" title="指针与引用的区别"></a>指针与引用的区别</h2><p>引用与指针的关系，引用需要一开始就要指定值，不可能用空，而指针可以初始为空。</p>
+        <h1 id="基础类"><a href="#基础类" class="headerlink" title="基础类"></a>基础类</h1><h2 id="指针与引用的区别"><a href="#指针与引用的区别" class="headerlink" title="指针与引用的区别"></a>指针与引用的区别</h2><p>引用与指针的关系，引用需要一开始就要指定值，不可能用空，而指针可以初始为空。</p>
+<span id="more"></span>
 <p><img src="/posts/ae4a2f5f/image-20221009212712220.png" alt="image-20221009212712220"></p>
 <h2 id="不要对数组使用多态"><a href="#不要对数组使用多态" class="headerlink" title="不要对数组使用多态"></a>不要对数组使用多态</h2><p>有代码</p>
 <figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class <span class="type">BST</span>&#123; ...&#125;;</span><br><span class="line">class <span class="type">BalancedBST</span>:public <span class="type">BST</span><span class="meta">&#123;...&#125;</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> printBSTArray(ostream&amp;s,<span class="keyword">const</span> <span class="type">BST</span> <span class="type">array</span>[],<span class="type">int</span> numElements)&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;numElements;i++)&#123;</span><br><span class="line">		s&lt;&lt;<span class="type">array</span>[i];//假设<span class="type">BST</span>类</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
